@@ -45,9 +45,9 @@
                 <div class="file-upload-wrapper">
                     <input type="file" id="certificate" name="certificate" accept="application/pdf,image/*" style="display:none;">
                     <label for="certificate" class="upload-box" tabindex="0">Click to upload certificate</label>
-                    <span id="file-upload-label">No file chosen</span>
-                    <a class="switch-link" href="signin.html">Already have an account? Sign in</a>
+                    <span id="file-upload-label">No file chosen</span>                  
                 </div>
+                <a class="switch-link" href="signin.html">Already registered? Sign in</a>
                 <button type="submit">Register</button>
                 <p id="signin-message"></p>
             </form>
@@ -301,6 +301,17 @@
         }
         .dark-mode #signin-message {
             color: #f7fbfd !important;
+        }
+        .switch-link {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: #3498db;
+            text-decoration: none;
+            font-size: 15px;
+        }
+        .switch-link:hover {
+            text-decoration: underline;
         }
         @media (max-width: 600px) {
             .signin-form {
