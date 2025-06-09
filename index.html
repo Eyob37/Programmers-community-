@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Page title</title>
+</head>
+<body>
+    <h2>this is the main page</h2>
+    <script>
+     
+     import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import {
+  getAuth,
+  signOut,
+  updatePassword,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import {
+  getDatabase,
+  ref,
+  get,
+  query,
+  orderByChild,
+  equalTo,
+  set,
+  onChildAdded,
+  onDisconnect,
+  onValue
+} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAu24f6vmreUJOjTVpH4NQ1zhP5LyTC2s0",
+  authDomain: "eyobchat-1769b.firebaseapp.com",
+  databaseURL: "https://eyobchat-1769b-default-rtdb.firebaseio.com",
+  projectId: "eyobchat-1769b",
+  storageBucket: "eyobchat-1769b.appspot.com",
+  messagingSenderId: "175396149369",
+  appId: "1:175396149369:web:b310d2fb7132cacad11ca8",
+  measurementId: "G-0XX85HVLKS"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+let a = 0;
+let onValueStoper = 0; 
+let isFirstStarte = true;
+let ite = true;
+
+if ('serviceWorker' in navigator) {
+   navigator.serviceWorker.register('sw.js').then(registration => {
+      console.log("Service Worker registered");
+      window.swRegistration = registration;
+   }).catch(err => {
+      alert("Service Worker registration failed: " + err);
+   });
+} else {
+   alert("Service Workers are not supported in this browser.");
+}
+
+
+function showNotification(Uname, messag) {           
+   if (!window.swRegistration) {
+      alert("Service Worker not ready.");
+      return;
+   }
+
+   try {
+      window.swRegistration.showNotification(Uname, {
+         body: messag
+      });
+   } catch (error) {
+      alert("Failed to show notification: " + error.message);
+   }
+}
+
+// Monitor authentication state
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = "signup.html";
+  } else {
+    const userRef = ref(db, "EyobChat/users/" + user.uid);
+    get(userRef).then((snapshot) => {
+      if (snapshot.exists()) {
+        const userData = snapshot.val();
+        document.querySelector(".chat-header").innerHTML = `<h2>Welcome, ${userData.name}!</h2>`;
+      }
+    });    
+  }
+});
+        
+    </script>
+</body>
+</html>
