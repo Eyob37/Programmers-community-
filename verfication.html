@@ -325,8 +325,7 @@
                     setTimeout(() => {
                         alert('Verification successful! Code: ' + code);
                         verifyBtn.innerHTML = '<i class="fas fa-shield-check"></i> Verify Code';
-                        verifyBtn.disabled = false;
-                        localStorage.setItem("email", "");
+                        verifyBtn.disabled = false;                   
                         localStorage.setItem("password", "");
                         finishVerification();                        
                     }, 1500);
