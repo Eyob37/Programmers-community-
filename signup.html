@@ -328,7 +328,7 @@ document.querySelector('.signin-form').addEventListener('submit', function(e) {
         alert("the confirmation password don't mach from password");
         return;
     }    
-    fetchSignInMethodsForEmail(auth, email)
+    fetchSignInMethodsForEmail(auth, Email)
     .then((methods) => {
     if (methods.length > 0) {
       alert("Email is already in use");
