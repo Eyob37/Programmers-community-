@@ -112,7 +112,7 @@
          
   	signInWithEmailAndPassword(auth, email, password)
 	 .then(userCredential => {
-  const user = userCredential.user;
+      const user = userCredential.user;
 				    // Save to localStorage
 	 localStorage.setItem("userId", user.uid);
 	 message.style.color = '#27ae60';
@@ -122,7 +122,7 @@
   }, 1200);
  })
  .catch(error => {
-			  message.style.color = '#e74c3c';
+message.style.color = '#e74c3c';
       message.textContent = `Signin error: ${error.message}`;				    
   });
          
