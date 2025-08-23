@@ -294,6 +294,7 @@
             }
         }
     </style>
+    <script type="module" src = "script.js"></script>
     <script>
         
 document.querySelector('.signin-form').addEventListener('submit', function(e) {
@@ -310,15 +311,26 @@ document.querySelector('.signin-form').addEventListener('submit', function(e) {
     if(password != Cpassword) {
         alert("the confirmation password don't mach from password");
         return;
-    }
-    localStorage.setItem("email", Email);
-    localStorage.setItem("password", password);
-    window.location.href = "verification.html";
+    }    
+    fetchSignInMethodsForEmail(auth, email)
+    .then((methods) => {
+    if (methods.length > 0) {
+      alert("Email is already in use");
+      document.getElementById('email').value = "";
+      document.getElementById('Password').value = "";
+      document.getElementById('passwordComfermation').value = "";
+      return;
+    } else {
+        localStorage.setItem("email", Email);
+        localStorage.setItem("password", password);
+         window.location.href = "verification.html";
+    }     
+  })
+
     
 });
 
         
     </script>
-    <script type="module" src = "script.js"></script>
 </body>
 </html>
