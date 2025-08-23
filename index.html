@@ -31,7 +31,7 @@ const email = "haymanot589@gmail.com";
 fetchSignInMethodsForEmail(auth, email)
   .then((methods) => {
     console.log(methods);  
-    if (methods.length = 0) {
+    if (methods.length > 0) {
       alert("✅ Email is already registered. Methods: " + methods.join(", "));
     } else {
       alert("❌ Email is not registered.");
