@@ -357,24 +357,81 @@
 			        fileLabel.textContent = 'No file chosen';
 			    }
 			});
-			
-document.querySelector('.register-form').addEventListener('submit', function(e) {
+</script>
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabaseUrl = "https://jurgrpqwyilfdpzbzfrd.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1cmdycHF3eWlsZmRwemJ6ZnJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5NDM3NTYsImV4cCI6MjA3MTUxOTc1Nn0.1E-1XaNMTuHGUpgVknyWxiiYXArdDCR9yXa8QzOms5E";
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+let email = localStorage.getItem("email");
+let userId = localStorage.getItem("userId");
+
+document.querySelector(".register-form").addEventListener("submit", async function(e) {
     e.preventDefault();
-    const name = document.getElementById('fullname').value;
-    const age = document.getElementById('age').value;
-    const grade = document.getElementById('grade').value;
-    const interest = document.getElementById('interest').value;
-    const certificate = document.getElementById('certificate').files[0];
-    const message = document.getElementById('register-message');
-    if (!name || !age || !grade || !interest) {
-        message.style.color = '#e74c3c';
-        message.textContent = 'Please fill all required fields.';
+
+    const name = document.getElementById("fullname").value;
+    const age = document.getElementById("age").value;
+    const grade = document.getElementById("grade").value;
+
+    // get multiple interests
+    const interestSelect = document.getElementById("interest");
+    const interests = Array.from(interestSelect.selectedOptions).map(opt => opt.value).join(",");
+
+    const certificate = document.getElementById("certificate").files[0];
+    const message = document.getElementById("register-message");
+
+    if (!name || !age || !grade || interests.length === 0) {
+        message.style.color = "#e74c3c";
+        message.textContent = "Please fill all required fields.";
         return;
     }
-    message.style.color = '#27ae60';
-    message.textContent = 'Registration successful!';
+
+    // Upload certificate to storage (optional)
+    let certificateUrl = null;
+    if (certificate) {
+        const { data, error } = await supabase.storage
+            .from("certificates")
+            .upload(`cert_${userId}_${certificate.name}`, certificate);
+
+        if (error) {
+            console.error("Upload error:", error.message);
+        } else {
+            const { data: publicUrl } = supabase.storage
+                .from("certificates")
+                .getPublicUrl(data.path);
+            certificateUrl = publicUrl.publicUrl;
+        }
+    }
+
+    // Insert into Supabase (interests as array)
+    const { data, error } = await supabase
+        .from("Users basic information")
+        .insert([
+            {
+                user_id: userId;
+                Email: email,
+                Name: name,
+                Age: age,
+                Grade: grade,
+                FOI: interests, // array
+                certificate: certificateUrl
+            }
+        ]);
+
+    if (error) {
+        message.style.color = "#e74c3c";
+        message.textContent = "Error: " + error.message;
+        console.error(error);
+    } else {
+        message.style.color = "#27ae60";
+        message.textContent = "Registration successful!";
+        console.log("Inserted:", data);
+    }
 });
+
     </script>
-    <script type = "module" src = "script.js"></script>
+    <script type="module" src = "script.js"></script>
 </body>
 </html>
