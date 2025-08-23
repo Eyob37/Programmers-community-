@@ -256,18 +256,9 @@
   </script>
   
   <script>    
-    function finishVerification() {
-      // Check if the email is already registered
-  fetchSignInMethodsForEmail(auth, email)
-    .then((methods) => {
-      if (methods.length > 0) {
-        message.innerText = "Email is already in use. Please use a different email.";
-        return;
-      }
-
+    window.finishVerification = () => {  
       // Create user with email and a temporary password
-      return createUserWithEmailAndPassword(auth, email, userPassword);
-    })
+     createUserWithEmailAndPassword(auth, email, userPassword);   
     .then((userCredential) => {
       if (!userCredential) return; // If user exists, don't continue
       const user = userCredential.user;     
