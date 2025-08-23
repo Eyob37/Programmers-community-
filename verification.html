@@ -277,7 +277,7 @@ const auth = getAuth(app);
    
     window.finishVerification = () => {  
       // Create user with email and a temporary password
-     createUserWithEmailAndPassword(auth, userEmail, userPassword);   
+     createUserWithEmailAndPassword(auth, userEmail, userPassword)
     .then((userCredential) => {
       if (!userCredential) return; // If user exists, don't continue
       const user = userCredential.user;     
