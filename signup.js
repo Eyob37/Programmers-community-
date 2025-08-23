@@ -1,49 +1,36 @@
- const fileInput = document.getElementById('certificate');
-        const fileLabel = document.getElementById('file-upload-label');
-        const uploadBox = document.querySelector('.upload-box');
-        const themeToggle = document.getElementById('theme-toggle');
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, fetchSignInMethodsForEmail } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-        uploadBox.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                fileInput.click();
-            }
-        });
-        fileInput.addEventListener('change', function() {
-            if (fileInput.files.length > 0) {
-                fileLabel.textContent = fileInput.files[0].name;
-            } else {
-                fileLabel.textContent = 'No file chosen';
-            }
-        });
-        document.querySelector('.signin-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const name = document.getElementById('fullname').value;
-            const age = document.getElementById('age').value;
-            const grade = document.getElementById('grade').value;
-            const interest = document.getElementById('interest').value;
-            const certificate = document.getElementById('certificate').files[0];
-            const message = document.getElementById('signin-message');
-            if (!name || !age || !grade || !interest) {
-                message.style.color = '#e74c3c';
-                message.textContent = 'Please fill all required fields.';
-                return;
-            }
-            message.style.color = '#27ae60';
-            message.textContent = 'Registration successful!';
-        });
-        function setTheme(dark) {
-            if (dark) {
-                document.documentElement.classList.add('dark-mode');
-                themeToggle.textContent = '☀️ White Mode';
-            } else {
-                document.documentElement.classList.remove('dark-mode');
-                themeToggle.textContent = '🌙 Dark Mode';
-            }
-        }
-        let dark = localStorage.getItem('theme') === 'dark';
-        setTheme(dark);
-        themeToggle.addEventListener('click', function() {
-            dark = !dark;
-            setTheme(dark);
-            localStorage.setItem('theme', dark ? 'dark' : 'light');
-        });
+// Your Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAxMSbx5OoHAav-st3h8DbCUZ9aZCcHnI8",
+  authDomain: "programming-community-80d94.firebaseapp.com",
+  projectId: "programming-community-80d94",
+  storageBucket: "programming-community-80d94.firebasestorage.app",
+  messagingSenderId: "103513211773",
+  appId: "1:103513211773:web:cb90e77287f005b7870214",
+  measurementId: "G-MMZD11XDNK"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const themeToggle = document.getElementById('theme-toggle');
+
+function setTheme(dark) {
+    if (dark) {
+        document.documentElement.classList.add('dark-mode');
+        themeToggle.textContent = '☀️ White Mode';
+    } else {
+        document.documentElement.classList.remove('dark-mode');
+        themeToggle.textContent = '🌙 Dark Mode';
+    }
+}
+let dark = localStorage.getItem('theme') === 'dark';
+setTheme(dark);
+themeToggle.addEventListener('click', function() {
+    dark = !dark;
+    setTheme(dark);
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+});
