@@ -294,11 +294,10 @@
             }
         }
     </style>
-    <script type="module" src = "script.js">
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, fetchSignInMethodsForEmail } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-    </script>
-    <script>
-        
+    <script type="module" src = "script.js"></script>
+    <script type = "module">
+   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, fetchSignInMethodsForEmail } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+     
 document.querySelector('.signin-form').addEventListener('submit', function(e) {
     e.preventDefault();
     const Email = document.getElementById('email').value;
