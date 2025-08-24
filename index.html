@@ -1,77 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Programmers Community</title>
-  <link rel="icon" type="image/x-icon" href="/images/Icon.png">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      text-align: center;
-    }
-    #logoutBtn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      background-color: #007bff;
-      color: white;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    #logoutBtn:hover {
-      background-color: #0056b3;
-    }
-  </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page title</title>
 </head>
 <body>
-  <h2>Welcome to the Programmers Community</h2>
-  <p>You are signed in successfully.</p>
-  <button id="logoutBtn">Logout</button>
+    <script type="module">
+   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, fetchSignInMethodsForEmail } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-  <script type="module">
-    import { 
-      initializeApp 
-    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import { 
-      getAuth, 
-      signOut, 
-      onAuthStateChanged 
-    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+// Your Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAxMSbx5OoHAav-st3h8DbCUZ9aZCcHnI8",
+  authDomain: "programming-community-80d94.firebaseapp.com",
+  projectId: "programming-community-80d94",
+  storageBucket: "programming-community-80d94.firebasestorage.app",
+  messagingSenderId: "103513211773",
+  appId: "1:103513211773:web:cb90e77287f005b7870214",
+  measurementId: "G-MMZD11XDNK"
+};
 
-    // Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyAxMSbx5OoHAav-st3h8DbCUZ9aZCcHnI8",
-      authDomain: "programming-community-80d94.firebaseapp.com",
-      projectId: "programming-community-80d94",
-      storageBucket: "programming-community-80d94.firebasestorage.app",
-      messagingSenderId: "103513211773",
-      appId: "1:103513211773:web:cb90e77287f005b7870214",
-      measurementId: "G-MMZD11XDNK"
-    };
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app); 
+        
 
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
 
-    // Monitor authentication state
-    onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        window.location.href = "signup.html";
+  // Function to check email registration status
+  async function checkEmailRegistration(email) {
+    try {
+      // Check if email is registered using Firebase's method
+      const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+      
+      if (signInMethods.length > 0) {
+        return {
+          exists: true,
+          methods: signInMethods,
+          message: "✅ Email is already registered"
+        };
+      } else {
+        return {
+          exists: false,
+          methods: [],
+          message: "❌ Email is not registered"
+        };
       }
-    });
+    } catch (error) {
+      console.error("Error checking email:", error);
+      return {
+        exists: null,
+        methods: [],
+        message: `⚠️ Error: ${error.message}`
+      };
+    }
+  }
 
-    // Logout button
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      signOut(auth).then(() => {
-        alert("You have been logged out.");
-        window.location.href = "signup.html";
-      }).catch((error) => {
-        console.error("Logout Error:", error.message);
-      });
-    });
-  </script>
+  // Usage example
+  async function checkEmail() {
+    const email = "haymanot589@gmail.com"; // Replace with your email
+    const result = await checkEmailRegistration(email);
+    
+    console.log(result.message);
+    console.log("Authentication methods:", result.methods);
+    
+    // Display result on page
+    const resultElement = document.getElementById('result');
+    if (resultElement) {
+      resultElement.innerHTML = `
+        <p>${result.message}</p>
+        ${result.methods.length > 0 ? `<p>Methods: ${result.methods.join(', ')}</p>` : ''}
+      `;
+    }
+  }
+
+
+
+        
+    </script>
 </body>
 </html>
