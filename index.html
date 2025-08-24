@@ -1,313 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Registration Checker</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            width: 90%;
-            max-width: 500px;
-            padding: 30px;
-            text-align: center;
-        }
-        
-        h1 {
-            color: #333;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-        
-        .description {
-            color: #555;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-        
-        .input-group {
-            margin-bottom: 25px;
-            text-align: left;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #333;
-        }
-        
-        .input-wrapper {
-            position: relative;
-        }
-        
-        input {
-            width: 100%;
-            padding: 14px 20px 14px 45px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-        
-        input:focus {
-            border-color: #6a11cb;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.2);
-        }
-        
-        i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #6a11cb;
-            font-size: 18px;
-        }
-        
-        button {
-            background: linear-gradient(to right, #6a11cb, #2575fc);
-            color: white;
-            border: none;
-            padding: 14px 20px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s;
-            margin-bottom: 25px;
-        }
-        
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        button:active {
-            transform: translateY(0);
-        }
-        
-        .result {
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        
-        .info {
-            background-color: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
-        }
-        
-        .result-icon {
-            font-size: 40px;
-            margin-bottom: 15px;
-        }
-        
-        .result-message {
-            margin-bottom: 10px;
-            font-weight: 500;
-        }
-        
-        .result-details {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .loading {
-            display: none;
-            margin: 20px 0;
-        }
-        
-        .loading-spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #6a11cb;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
+    <title>Page title</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Email Registration Checker</h1>
-        <p class="description">Check if an email address is registered in our Firebase Authentication system</p>
-        
-        <div class="input-group">
-            <label for="email">Email Address</label>
-            <div class="input-wrapper">
-                <i class="fas fa-envelope"></i>
-                <input type="email" id="email" placeholder="Enter email address" value="haymanot589@gmail.com">
-            </div>
-        </div>
-        
-        <button id="check-btn">
-            <i class="fas fa-check-circle"></i> Check Registration Status
-        </button>
-        
-        <div class="loading" id="loading">
-            <div class="loading-spinner"></div>
-            <p>Checking Firebase Authentication...</p>
-        </div>
-        
-        <div class="result" id="result">
-            <div class="result-icon" id="result-icon"></div>
-            <p class="result-message" id="result-message"></p>
-            <p class="result-details" id="result-details"></p>
-        </div>
-    </div>
-
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-        import { 
-            getAuth, 
-            fetchSignInMethodsForEmail 
-        } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, fetchSignInMethodsForEmail } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyAxMSbx5OoHAav-st3h8DbCUZ9aZCcHnI8",
-            authDomain: "programming-community-80d94.firebaseapp.com",
-            projectId: "programming-community-80d94",
-            storageBucket: "programming-community-80d94.firebasestorage.app",
-            messagingSenderId: "103513211773",
-            appId: "1:103513211773:web:cb90e77287f005b7870214",
-            measurementId: "G-MMZD11XDNK"
-        };
+// Your Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAxMSbx5OoHAav-st3h8DbCUZ9aZCcHnI8",
+  authDomain: "programming-community-80d94.firebaseapp.com",
+  projectId: "programming-community-80d94",
+  storageBucket: "programming-community-80d94.firebasestorage.app",
+  messagingSenderId: "103513211773",
+  appId: "1:103513211773:web:cb90e77287f005b7870214",
+  measurementId: "G-MMZD11XDNK"
+};
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app); 
+        
 
-        // Function to check email registration status
-        async function checkEmailRegistration(email) {
-            try {
-                // Check if email is registered using Firebase's method
-                const signInMethods = await fetchSignInMethodsForEmail(auth, email);
-                
-                if (signInMethods.length > 0) {
-                    return {
-                        exists: true,
-                        methods: signInMethods,
-                        message: "✅ Email is already registered"
-                    };
-                } else {
-                    return {
-                        exists: false,
-                        methods: [],
-                        message: "❌ Email is not registered"
-                    };
-                }
-            } catch (error) {
-                console.error("Error checking email:", error);
-                return {
-                    exists: null,
-                    methods: [],
-                    message: `⚠️ Error: ${error.message}`
-                };
-            }
-        }
 
-        // Handle button click
-        document.getElementById('check-btn').addEventListener('click', async () => {
-            const email = document.getElementById('email').value;
-            const resultDiv = document.getElementById('result');
-            const loadingDiv = document.getElementById('loading');
-            const resultIcon = document.getElementById('result-icon');
-            const resultMessage = document.getElementById('result-message');
-            const resultDetails = document.getElementById('result-details');
-            
-            // Validate email
-            if (!email || !email.includes('@')) {
-                resultDiv.className = 'result error';
-                resultIcon.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
-                resultMessage.textContent = 'Invalid email address';
-                resultDetails.textContent = 'Please enter a valid email address';
-                resultDiv.style.display = 'block';
-                return;
-            }
-            
-            // Show loading, hide previous result
-            loadingDiv.style.display = 'block';
-            resultDiv.style.display = 'none';
-            
-            // Check email registration status
-            const result = await checkEmailRegistration(email);
-            
-            // Hide loading
-            loadingDiv.style.display = 'none';
-            
-            // Display result
-            if (result.exists === true) {
-                resultDiv.className = 'result success';
-                resultIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
-                resultMessage.textContent = result.message;
-                resultDetails.textContent = `Authentication methods: ${result.methods.join(', ')}`;
-            } else if (result.exists === false) {
-                resultDiv.className = 'result info';
-                resultIcon.innerHTML = '<i class="fas fa-info-circle"></i>';
-                resultMessage.textContent = result.message;
-                resultDetails.textContent = 'This email address is not registered in our authentication system';
-            } else {
-                resultDiv.className = 'result error';
-                resultIcon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
-                resultMessage.textContent = 'Error checking email';
-                resultDetails.textContent = result.message;
-            }
-            
-            resultDiv.style.display = 'block';
-        });
+// Try to register with a dummy password
+async function checkIfEmailExists(auth, email) {
+  try {
+    // Try creating the account
+    const userCredential = await createUserWithEmailAndPassword(auth, email, "DummyPassword123!");
+    
+    // If it succeeds, delete it immediately (since we only wanted to check)
+    await userCredential.user.delete();
+    return false; // Email was not registered before
+  } catch (error) {
+    if (error.code === "auth/email-already-in-use") {
+      return true; // Email exists
+    } else {
+      console.error("Error checking email:", error.message);
+      return null; // Unknown error
+    }
+  }
+}
 
-        // Initial check for the demo email when page loads
-        window.addEventListener('load', () => {
-            document.getElementById('check-btn').click();
-        });
+// Usage
+checkIfEmailExists(auth, "eyobeb337@gmail.com")
+  .then((exists) => {
+    if (exists === true) {
+      alert("✅ Email already exists");
+    } else if (exists === false) {
+      alert("❌ Email not registered");
+    } else {
+      alert("⚠️ Error checking email");
+    }
+  });
+        
     </script>
 </body>
 </html>
