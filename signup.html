@@ -332,9 +332,7 @@ document.querySelector('.signin-form').addEventListener('submit', function(e) {
     .then((methods) => {
     if (methods.length > 0) {
       alert("Email is already in use");
-      document.getElementById('email').value = "";
-      document.getElementById('Password').value = "";
-      document.getElementById('passwordComfermation').value = "";
+      window.location.href = "signin.html";
       return;
     } else {
         localStorage.setItem("email", Email);
