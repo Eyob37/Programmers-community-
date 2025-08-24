@@ -1,319 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Registration Checker</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .container {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            width: 90%;
-            max-width: 500px;
-            padding: 30px;
-            text-align: center;
-        }
-        
-        h1 {
-            color: #333;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-        
-        .description {
-            color: #555;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-        
-        .input-group {
-            margin-bottom: 25px;
-            text-align: left;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #333;
-        }
-        
-        .input-wrapper {
-            position: relative;
-        }
-        
-        input {
-            width: 100%;
-            padding: 14px 20px 14px 45px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-        
-        input:focus {
-            border-color: #6a11cb;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.2);
-        }
-        
-        i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #6a11cb;
-            font-size: 18px;
-        }
-        
-        button {
-            background: linear-gradient(to right, #6a11cb, #2575fc);
-            color: white;
-            border: none;
-            padding: 14px 20px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s;
-            margin-bottom: 25px;
-        }
-        
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        button:active {
-            transform: translateY(0);
-        }
-        
-        .result {
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        
-        .info {
-            background-color: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
-        }
-        
-        .result-icon {
-            font-size: 40px;
-            margin-bottom: 15px;
-        }
-        
-        .result-message {
-            margin-bottom: 10px;
-            font-weight: 500;
-        }
-        
-        .result-details {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .firebase-info {
-            margin-top: 30px;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            font-size: 14px;
-            color: #555;
-            text-align: left;
-        }
-        
-        .firebase-info h3 {
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .code-example {
-            background-color: #eee;
-            padding: 10px;
-            border-radius: 5px;
-            overflow-x: auto;
-            margin-top: 10px;
-            font-family: monospace;
-            font-size: 13px;
-        }
-        
-        .loading {
-            display: none;
-            margin: 20px 0;
-        }
-        
-        .loading-spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #6a11cb;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Programmers Community</title>
+  <link rel="icon" type="image/x-icon" href="/images/Icon.png">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+    #logoutBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    #logoutBtn:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Email Registration Checker</h1>
-        <p class="description">Check if an email address is registered in our Firebase Authentication system</p>
-        
-        <div class="input-group">
-            <label for="email">Email Address</label>
-            <div class="input-wrapper">
-                <i class="fas fa-envelope"></i>
-                <input type="email" id="email" placeholder="Enter email address" value="haymanot589@gmail.com">
-            </div>
-        </div>
-        
-        <button id="check-btn">Check Registration Status</button>
-        
-        <div class="loading" id="loading">
-            <div class="loading-spinner"></div>
-            <p>Checking Firebase Authentication...</p>
-        </div>
-        
-        <div class="result" id="result">
-            <div class="result-icon" id="result-icon"></div>
-            <p class="result-message" id="result-message"></p>
-            <p class="result-details" id="result-details"></p>
-        </div>
-        
-        <div class="firebase-info">
-            <h3>Firebase Authentication Check</h3>
-            <p>This tool uses Firebase's <code>fetchSignInMethodsForEmail</code> method to check if an email is registered and which authentication methods are enabled.</p>
-            <div class="code-example">
-                fetchSignInMethodsForEmail(auth, email)<br>
-                .then((methods) => {<br>
-                &nbsp;&nbsp;if (methods.length > 0) {<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;// Email is registered<br>
-                &nbsp;&nbsp;} else {<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;// Email is not registered<br>
-                &nbsp;&nbsp;}<br>
-                });
-            </div>
-        </div>
-    </div>
+  <h2>Welcome to the Programmers Community</h2>
+  <p>You are signed in successfully.</p>
+  <button id="logoutBtn">Logout</button>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, fetchSignInMethodsForEmail } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+  <script type="module">
+    import { 
+      initializeApp 
+    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { 
+      getAuth, 
+      signOut, 
+      onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-        // Your Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyAxMSbx5OoHAav-st3h8DbCUZ9aZCcHnI8",
-            authDomain: "programming-community-80d94.firebaseapp.com",
-            projectId: "programming-community-80d94",
-            storageBucket: "programming-community-80d94.firebasestorage.app",
-            messagingSenderId: "103513211773",
-            appId: "1:103513211773:web:cb90e77287f005b7870214",
-            measurementId: "G-MMZD11XDNK"
-        };
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAxMSbx5OoHAav-st3h8DbCUZ9aZCcHnI8",
+      authDomain: "programming-community-80d94.firebaseapp.com",
+      projectId: "programming-community-80d94",
+      storageBucket: "programming-community-80d94.firebasestorage.app",
+      messagingSenderId: "103513211773",
+      appId: "1:103513211773:web:cb90e77287f005b7870214",
+      measurementId: "G-MMZD11XDNK"
+    };
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app); 
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-        document.getElementById('check-btn').addEventListener('click', () => {
-            const email = document.getElementById('email').value;
-            const resultDiv = document.getElementById('result');
-            const loadingDiv = document.getElementById('loading');
-            const resultIcon = document.getElementById('result-icon');
-            const resultMessage = document.getElementById('result-message');
-            const resultDetails = document.getElementById('result-details');
-            
-            // Validate email
-            if (!email || !email.includes('@')) {
-                resultDiv.className = 'result error';
-                resultIcon.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
-                resultMessage.textContent = 'Invalid email address';
-                resultDetails.textContent = 'Please enter a valid email address';
-                resultDiv.style.display = 'block';
-                return;
-            }
-            
-            // Show loading, hide previous result
-            loadingDiv.style.display = 'block';
-            resultDiv.style.display = 'none';
-            
-            fetchSignInMethodsForEmail(auth, email)
-                .then((methods) => {
-                    loadingDiv.style.display = 'none';
-                    
-                    if (methods.length > 0) {
-                        resultDiv.className = 'result success';
-                        resultIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
-                        resultMessage.textContent = 'Email is registered';
-                        resultDetails.textContent = `Authentication methods: ${methods.join(', ')}`;
-                    } else {
-                        resultDiv.className = 'result info';
-                        resultIcon.innerHTML = '<i class="fas fa-info-circle"></i>';
-                        resultMessage.textContent = 'Email is not registered';
-                        resultDetails.textContent = 'This email address is not registered in our authentication system';
-                    }
-                    resultDiv.style.display = 'block';
-                })
-                .catch((error) => {
-                    loadingDiv.style.display = 'none';
-                    resultDiv.className = 'result error';
-                    resultIcon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
-                    resultMessage.textContent = 'Error checking email';
-                    resultDetails.textContent = error.message;
-                    resultDiv.style.display = 'block';
-                    console.error("Error checking email:", error);
-                });
-        });
+    // Monitor authentication state
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "signup.html";
+      }
+    });
 
-        // Initial check for the demo email when page loads
-        window.addEventListener('load', () => {
-            document.getElementById('check-btn').click();
-        });
-    </script>
+    // Logout button
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      signOut(auth).then(() => {
+        alert("You have been logged out.");
+        window.location.href = "signup.html";
+      }).catch((error) => {
+        console.error("Logout Error:", error.message);
+      });
+    });
+  </script>
 </body>
 </html>
