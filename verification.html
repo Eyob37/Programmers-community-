@@ -219,6 +219,7 @@
                         <i class="fas fa-redo"></i> Resend Code
                     </button>
                 </div>
+                <div id="message"></div>
             </form>
         </div>
         
@@ -275,6 +276,7 @@ const auth = getAuth(app);
        }sendRandom();
    
     window.finishVerification = () => {  
+    const message = document.getElementById("message");
       // Create user with email and a temporary password
      createUserWithEmailAndPassword(auth, userEmail, userPassword)
     .then((userCredential) => {
