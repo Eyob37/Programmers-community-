@@ -393,7 +393,7 @@ document.querySelector(".register-form").addEventListener("submit", async functi
     if (certificate) {
         const { data, error } = await supabase.storage
             .from("certificates")
-            .upload(`cert_${userId}_${certificate.name}`, certificate);
+            .upload(`cert_${userId}_name_${certificate.name}`, certificate);
 
         if (error) {
             console.error("Upload error:", error.message);
