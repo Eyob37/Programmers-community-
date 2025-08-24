@@ -13,8 +13,8 @@
         <div class="register-container">
             <form class="register-form">
                 <h2>User Registration</h2>
-                <label for="fullname">Full Name</label>
-                <input type="text" id="fullname" name="fullname" required>
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
                 <label for="age">Age</label>
                 <input type="number" id="age" name="age" min="10" max="80" required>          
                 <label for="grade">Education Level</label>
@@ -371,7 +371,7 @@ let userId = localStorage.getItem("userId");
 document.querySelector(".register-form").addEventListener("submit", async function(e) {
     e.preventDefault();
 
-    const name = document.getElementById("fullname").value;
+    const name = document.getElementById("name").value;
     const age = document.getElementById("age").value;
     const grade = document.getElementById("grade").value;
 
