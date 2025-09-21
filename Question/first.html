@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Quiz Application</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .slide-in { animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="text-center mb-8 fade-in">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">Tech Quiz</h1>
+            <p class="text-gray-600">Test your knowledge in your chosen field</p>
+        </header>
+
+        <!-- Loading State -->
+        <div id="loading" class="text-center">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            <p class="mt-4 text-gray-600">Loading quiz questions...</p>
+        </div>
+
+        <!-- No Field Selected -->
+        <div id="no-field" class="hidden text-center">
+            <div class="bg-white rounded-xl shadow-lg p-8 max-w-md mx-auto">
+                <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-semibold text-gray-800 mb-2">No Field Selected</h2>
+                <p class="text-gray-600">Please select a field category first to start the quiz.</p>
+            </div>
+        </div>
+
+        <!-- Quiz Container -->
+        <div id="quiz-container" class="hidden">
+            <!-- Field Header -->
+            <div id="field-header" class="bg-white rounded-xl shadow-lg p-6 mb-6 fade-in">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 id="field-title" class="text-2xl font-bold text-gray-800"></h2>
+                        <p class="text-gray-600 mt-1">Answer all questions to complete the quiz</p>
+                    </div>
+                    <div class="text-right">
+                        <div id="progress-info" class="text-sm text-gray-500 mb-1">Question 1 of 10</div>
+                        <div class="w-32 bg-gray-200 rounded-full h-2">
+                            <div id="progress-bar" class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: 10%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div id="question-card" class="bg-white rounded-xl shadow-lg p-8 mb-6 slide-in">
+                <div class="mb-6">
+                    <h3 id="question-text" class="text-xl font-semibold text-gray-800 leading-relaxed"></h3>
+                </div>
+
+                <div id="options-container" class="space-y-4">
+                    <!-- Options will be inserted here -->
+                </div>
+
+                <div id="validation-message" class="hidden mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <p class="text-red-600 text-sm">Please select an answer before proceeding.</p>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="flex justify-between items-center">
+                <button id="prev-btn" class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Previous
+                </button>
+                
+                <div class="flex space-x-3">
+                    <button id="next-btn" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                        Next Question
+                    </button>
+                    <button id="finish-btn" class="hidden px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200">
+                        Finish Quiz
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div id="results-container" class="hidden text-center">
+            <div class="bg-white rounded-xl shadow-lg p-8 max-w-md mx-auto">
+                <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Quiz Complete!</h2>
+                <div id="final-score" class="text-6xl font-bold text-blue-600 mb-4">0/10</div>
+                <p id="score-message" class="text-gray-600 mb-6">Great job! Your score has been saved.</p>
+                <button id="restart-btn" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                    Take Another Quiz
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
