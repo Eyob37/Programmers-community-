@@ -1,3 +1,12 @@
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabaseUrl = "https://jurgrpqwyilfdpzbzfrd.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1cmdycHF3eWlsZmRwemJ6ZnJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5NDM3NTYsImV4cCI6MjA3MTUxOTc1Nn0.1E-1XaNMTuHGUpgVknyWxiiYXArdDCR9yXa8QzOms5E";
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+let userId = localStorage.getItem("userId");
+
+
 class TechQuiz {
     constructor() {
         this.questions = [];
@@ -277,6 +286,9 @@ class TechQuiz {
         
         // Show results
         this.displayResults();
+        setTimeout(()=>{
+            window.location.href = "user interface.html";
+        }, 3000);
     }
 
     calculateScore() {
@@ -298,12 +310,27 @@ class TechQuiz {
         };
         
         // Save individual score
-        localStorage.setItem(`quiz_score_${this.field}`, JSON.stringify(scoreData));
+        localStorage.setItem(`score`, scoreData.percentage);
+        saveOnSubabase(JSON.stringify(scoreData));
         
         // Save to scores history
         let scoresHistory = JSON.parse(localStorage.getItem('quiz_scores_history') || '[]');
         scoresHistory.push(scoreData);
         localStorage.setItem('quiz_scores_history', JSON.stringify(scoresHistory));
+    }
+
+    function saveOnSubabase(scoreData) {
+			  const { data, error } = await supabase
+			    .from('Users basic information') // replace with your table name
+			    .update({ Score: scoreData }) // set score to 25
+			    .eq('user_id', userId) // condition: where name is 'Esubalew'
+			
+			  if (error) {
+			    console.error('Error updating score:', error)
+			  } else {
+			    console.log('Updated row:', data)
+			  }
+			       
     }
 
     displayResults() {
