@@ -72,6 +72,12 @@
         console.error("Logout Error:", error.message);
       });
     });
+    
+    if(localStorage.setItem(`score`, scoreData.percentage)){
+        window.location.href = "user interface.html";
+    }else{
+        window.location.href = "./Question/first.html";
+    }
   </script>
 </body>
 </html>
