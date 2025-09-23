@@ -378,6 +378,7 @@ document.querySelector(".register-form").addEventListener("submit", async functi
     // get multiple interests
     const interestSelect = document.getElementById("interest");
     const interests = Array.from(interestSelect.selectedOptions).map(opt => opt.value).join(",");
+    localStorage.setItem("interests", JSON.stringify(Array.from(interestSelect.selectedOptions).map(opt => opt.value)));
 
     const certificate = document.getElementById("certificate").files[0];
     const message = document.getElementById("register-message");
