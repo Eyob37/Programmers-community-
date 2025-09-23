@@ -111,12 +111,13 @@ let userId = localStorage.getItem("userId");
                 div.appendChild(button);
 
                 // Click on main div
-                div.addEventListener("click", handleDivClick);                
+                   const clickHandler = () => handleDivClick(interest);
+                div.addEventListener("click", clickHandler);
 
                 if (WhichDone[interest]){
                    div.style.background = "#71ff6a";
-                   div.removeEventListener("click", handleDivClick);
-                 }
+                   div.removeEventListener("click", clickHandler);
+                }
 
                 // Click on show more button
                 button.addEventListener("click", (event) => {
