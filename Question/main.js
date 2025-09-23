@@ -1,11 +1,4 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js";
-
-const supabaseUrl = "https://jurgrpqwyilfdpzbzfrd.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1cmdycHF3eWlsZmRwemJ6ZnJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5NDM3NTYsImV4cCI6MjA3MTUxOTc1Nn0.1E-1XaNMTuHGUpgVknyWxiiYXArdDCR9yXa8QzOms5E";
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-let userId = localStorage.getItem("userId");
-
+let WhichDone = JSON.parse(localStorage.getItem("WhichDone")) || {};
 
 class TechQuiz {
     constructor() {
@@ -35,8 +28,7 @@ class TechQuiz {
         
         this.prevBtnEl = document.getElementById('prev-btn');
         this.nextBtnEl = document.getElementById('next-btn');
-        this.finishBtnEl = document.getElementById('finish-btn');
-        this.restartBtnEl = document.getElementById('restart-btn');
+        this.finishBtnEl = document.getElementById('finish-btn');        
         
         this.finalScoreEl = document.getElementById('final-score');
         this.scoreMessageEl = document.getElementById('score-message');
@@ -45,7 +37,7 @@ class TechQuiz {
         this.prevBtnEl.addEventListener('click', () => this.previousQuestion());
         this.nextBtnEl.addEventListener('click', () => this.nextQuestion());
         this.finishBtnEl.addEventListener('click', () => this.finishQuiz());
-        this.restartBtnEl.addEventListener('click', () => this.restartQuiz());
+        
     }
 
     async loadQuiz() {
@@ -278,6 +270,11 @@ class TechQuiz {
             return;
         }
         
+        
+            WhichDone[this.field] = true;
+            localStorage.setItem("WhichDone", JSON.stringify(WhichDone));
+        
+        
         // Calculate score
         this.calculateScore();
         
@@ -287,8 +284,8 @@ class TechQuiz {
         // Show results
         this.displayResults();
         setTimeout(()=>{
-            window.location.href = "user interface.html";
-        }, 3000);
+            window.location.href = "../manage Question.html";
+        }, 1000);
     }
 
     calculateScore() {
@@ -310,27 +307,12 @@ class TechQuiz {
         };
         
         // Save individual score
-        localStorage.setItem(`score`, scoreData.percentage);
-        saveOnSubabase(JSON.stringify(scoreData));
+        localStorage.setItem(`score`, JSON.stringify(scoreData));        
         
         // Save to scores history
         let scoresHistory = JSON.parse(localStorage.getItem('quiz_scores_history') || '[]');
         scoresHistory.push(scoreData);
         localStorage.setItem('quiz_scores_history', JSON.stringify(scoresHistory));
-    }
-
-    function saveOnSubabase(scoreData) {
-			  const { data, error } = await supabase
-			    .from('Users basic information') // replace with your table name
-			    .update({ Score: scoreData }) // set score to 25
-			    .eq('user_id', userId) // condition: where name is 'Esubalew'
-			
-			  if (error) {
-			    console.error('Error updating score:', error)
-			  } else {
-			    console.log('Updated row:', data)
-			  }
-			       
     }
 
     displayResults() {
