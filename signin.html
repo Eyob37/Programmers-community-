@@ -115,6 +115,33 @@
     </style>
     
       <script type = "module">
+          
+                    
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabaseUrl = "https://jurgrpqwyilfdpzbzfrd.supabase.co";
+const supabaseKey = "your-anon-key";
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+async function getScore(userId) {
+  const { data, error } = await supabase
+    .from("Users basic information")
+    .select("Score")
+    .eq("user_id", userId)   // filter by the same userId
+    .single();               // expect only one row back
+
+  if (error) {
+    console.error("Error fetching score:", error);
+    return null;
+  }
+
+  // If you stored Score as JSON string, parse it:
+  const score = data.Score ? JSON.parse(data.Score) : null;
+
+  return score;
+}
+
+          
    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, fetchSignInMethodsForEmail } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
@@ -143,8 +170,10 @@ const auth = getAuth(app);
   	signInWithEmailAndPassword(auth, userEmail, password)
 	 .then(userCredential => {
       const user = userCredential.user;
-				    // Save to localStorage
 	 localStorage.setItem("userId", user.uid);
+	 getScore(user.uid).then(score => {
+      localStorage.setItem("scores", score);
+    });
 	 message.style.color = '#27ae60';
   message.textContent = 'Sign in successful! Redirecting...';
   setTimeout(function() {
@@ -156,7 +185,7 @@ message.style.color = '#e74c3c';
       message.textContent = `Signin error: ${error.message}`;				    
   });
          
-        });
+});
     </script>
 </body>
 </html>
