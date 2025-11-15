@@ -1,0 +1,190 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" type="image/x-icon" href="/images/Icon.png">   
+</head>
+<body>
+    <div class="signin-container">
+        <form class="signin-form">
+            <h2>Sign In</h2>
+            <label for="username">Email</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Sign In</button>
+            <p id="signin-message"></p>
+            <a class="switch-link" href="signup.html">Don't have an account? Sign up</a>
+            <a class="reset-link" href="reset password.html">Do you forget password? Reset password</a>
+        </form>
+    </div>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+            color: #333;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .signin-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .signin-form {
+            background: #fff;
+            padding: 36px 32px 28px 32px;
+            border-radius: 12px;
+            box-shadow: 0 6px 32px rgba(52, 152, 219, 0.13);
+            width: 100%;
+            max-width: 350px;
+        }
+        .signin-form h2 {
+            text-align: center;
+            margin-bottom: 22px;
+            color: #3498db;
+            font-size: 2rem;
+        }
+        .signin-form label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        .signin-form input[type="text"],
+        .signin-form input[type="password"] {
+            width: 100%;
+            padding: 11px 10px;
+            margin-bottom: 16px;
+            border-radius: 6px;
+            border: 1px solid #bcdff1;
+            font-size: 1rem;
+            background: #f7fbfd;
+            transition: border 0.2s;
+        }
+        .signin-form input:focus {
+            border: 1.5px solid #3498db;
+            outline: none;
+        }
+        .signin-form button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, #3498db 60%, #2ecc71 100%);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: background 0.2s;
+        }
+        .signin-form button:hover {
+            background: #217dbb;
+        }
+        #signin-message {
+            text-align: center;
+            margin-top: 15px;
+            color: #e67e22;
+            font-size: 15px;
+        }
+        .switch-link {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: #3498db;
+            text-decoration: none;
+            font-size: 15px;
+        }
+        .switch-link:hover {
+            text-decoration: underline;
+        }
+        .reset-link {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: #3498db;
+            text-decoration: none;
+            font-size: 15px;
+        }
+        .reset-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+    
+      <script type = "module">
+          
+                    
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabaseUrl = "https://jurgrpqwyilfdpzbzfrd.supabase.co";
+const supabaseKey = "your-anon-key";
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+async function getScore(userId) {
+  const { data, error } = await supabase
+    .from("Users basic information")
+    .select("Score")
+    .eq("user_id", userId)   // filter by the same userId
+    .single();               // expect only one row back
+
+  if (error) {
+    console.error("Error fetching score:", error);
+    return null;
+  }
+
+  // If you stored Score as JSON string, parse it:
+  const score = data.Score ? JSON.parse(data.Score) : null;
+
+  return score;
+}
+
+          
+   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, fetchSignInMethodsForEmail } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+// Your Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAxMSbx5OoHAav-st3h8DbCUZ9aZCcHnI8",
+  authDomain: "programming-community-80d94.firebaseapp.com",
+  projectId: "programming-community-80d94",
+  storageBucket: "programming-community-80d94.firebasestorage.app",
+  messagingSenderId: "103513211773",
+  appId: "1:103513211773:web:cb90e77287f005b7870214",
+  measurementId: "G-MMZD11XDNK"
+};
+
+localStorage.clear();
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app); 
+        document.querySelector('.signin-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const userEmail = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('signin-message');
+         
+  	signInWithEmailAndPassword(auth, userEmail, password)
+	 .then(userCredential => {
+      const user = userCredential.user;
+	 localStorage.setItem("userId", user.uid);
+	 localStorage.setItem('allDone', true);
+	 
+	 message.style.color = '#27ae60';
+  message.textContent = 'Sign in successful! Redirecting...';
+  setTimeout(function() {
+      window.location.href = 'index.html';
+  }, 1200);
+ })
+ .catch(error => {
+message.style.color = '#e74c3c';
+      message.textContent = `Signin error: ${error.message}`;				    
+  });
+         
+});
+    </script>
+</body>
+</html>

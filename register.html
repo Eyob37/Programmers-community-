@@ -1,0 +1,439 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration form</title>
+    <link rel="icon" type="image/x-icon" href="/images/Icon.png">
+</head>
+<body>
+    <div class="theme-toggle-wrapper">
+        <button id="theme-toggle" type="button">🌙 Dark Mode</button>
+    </div>
+    <div class="main-bg">
+        <div class="register-container">
+            <form class="register-form">
+                <h2>User Registration</h2>
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+                <label for="age">Age</label>
+                <input type="number" id="age" name="age" min="10" max="80" required>          
+                <label for="grade">Education Level</label>
+                <select id="grade" name="grade" required>
+                    <option value="">Select Level</option>
+                   <option value="elementary">Elementary</option>
+                    <option value="9">Grade 9</option>
+                    <option value="10">Grade 10</option>
+                    <option value="11">Grade 11</option>
+                    <option value="12">Grade 12</option>
+                    <option value="Diploma">Diploma</option>
+                    <option value="Degree">Degree</option>
+                    <option value="masters">Masters</option>
+                </select>
+                <label for="interest">Field of Interest</label>
+                <select id="interest" name="interest" required multiple size="10">
+		 			<optgroup label="Core IT Fields">
+					    <option value="software">Software Development / Programming</option>
+					    <option value="web">Web Development</option>
+					    <option value="mobile">Mobile Development</option>
+					    <option value="game">Game Development</option>
+					    <option value="database">Database Management</option>
+					  </optgroup>
+					
+					  <optgroup label="Systems & Infrastructure">
+					    <option value="networking">Networking</option>
+					    <option value="cloud">Cloud Computing</option>
+					    <option value="devops">DevOps / System Administration</option>
+					    <option value="support">IT Support / Help Desk</option>
+					  </optgroup>
+					
+					  <optgroup label="Security & Data">
+					    <option value="cybersecurity">Cybersecurity</option>
+					    <option value="datascience">Data Science / Big Data</option>
+					    <option value="ai">Artificial Intelligence / Machine Learning</option>
+					    <option value="bi">Business Intelligence</option>
+					  </optgroup>
+					
+					  <optgroup label="Emerging Technologies">
+					    <option value="iot">Internet of Things (IoT)</option>
+					    <option value="blockchain">Blockchain / Web3</option>
+					    <option value="arvr">AR / VR (Augmented & Virtual Reality)</option>
+					    <option value="robotics">Robotics & Automation</option>
+					  </optgroup>
+                </select>
+                <label for="certificate">Past Course Completion Certificate (optional)</label>
+                <div class="file-upload-wrapper">
+                   <input type="file" id="certificate" name="certificate" 
+       accept="application/pdf,image/*,.doc,.docx" style="display:none;">
+                    <label for="certificate" class="upload-box" tabindex="0">Click to upload certificate</label>
+                    <span id="file-upload-label">No file chosen</span>                  
+                </div>
+                
+                <button type="submit">Register</button>
+                <p id="register-message"></p>
+            </form>
+        </div>
+    </div>
+    <footer class="copyright-footer">
+        &copy; 2025 Yonas. All rights reserved.<br>
+        Contact: <a href="https://t.me/programmers_community2" target="_blank" class="telegram-link">Telegram</a>
+    </footer>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #e0eafc;
+            color: #333;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .theme-toggle-wrapper {
+            position: fixed;
+            top: 24px;
+            right: 32px;
+            z-index: 100;
+        }
+        #theme-toggle {
+            background: #fff;
+            color: #3498db;
+            border: 1.5px solid #bcdff1;
+            border-radius: 22px;
+            padding: 10px 22px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.08);
+            transition: background 0.2s, color 0.2s, border 0.2s;
+        }
+        #theme-toggle:hover {
+            background: #3498db;
+            color: #fff;
+            border-color: #217dbb;
+        }
+        .main-bg {
+            min-height: 100vh;
+            width: 100vw;
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 50%, #a1c4fd 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .register-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            min-height: 100vh;
+        }
+        .register-form {
+            background: #fff;
+            padding: 48px 40px 36px 40px;
+            border-radius: 22px;
+            box-shadow: 0 10px 48px rgba(52, 152, 219, 0.18);
+            width: 100%;
+            max-width: 440px;
+            min-width: 320px;
+            border: 1.5px solid #e3eafc;
+            transition: box-shadow 0.2s, border 0.2s;
+        }
+        .register-form:hover {
+            box-shadow: 0 16px 56px rgba(52, 152, 219, 0.22);
+            border: 1.5px solid #bcdff1;
+        }
+        .register-form h2 {
+            text-align: center;
+            margin-bottom: 28px;
+            color: #3498db;
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+        }
+        .register-form label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 500;
+            color: #217dbb;
+            font-size: 1.05rem;
+        }
+        .register-form input[type="text"],
+        .register-form input[type="password"],
+        .register-form input[type="number"],
+        .register-form input[type="email"],
+        .register-form select {
+            width: 100%;
+            padding: 13px 12px;
+            margin-bottom: 18px;
+            border-radius: 8px;
+            border: 1.5px solid #bcdff1;
+            font-size: 1.08rem;
+            background: #f7fbfd;
+            transition: border 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
+        }
+        .register-form input:focus,
+        .register-form select:focus {
+            border: 1.5px solid #3498db;
+            outline: none;
+            box-shadow: 0 0 0 2px #e3eafc;
+        }
+        .register-form button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, #3498db 60%, #2ecc71 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.15rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.08);
+        }
+        .register-form button:hover {
+            background: #217dbb;
+            box-shadow: 0 4px 16px rgba(52, 152, 219, 0.13);
+        }
+        #register-message {
+            text-align: center;
+            margin-top: 18px;
+            color: #e67e22;
+            font-size: 1.05rem;
+        }
+        .file-upload-wrapper {
+            display: flex;
+            align-items: center;
+            background: #f7fbfd;
+            border-radius: 8px;
+            border: 1.5px solid #bcdff1;
+            padding: 10px 14px;
+            margin-bottom: 18px;
+        }
+        .file-upload-wrapper input[type="file"] {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+        }
+        #file-upload-label {
+            margin-left: 14px;
+            color: #888;
+            font-size: 1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 140px;
+        }
+        .upload-box {
+            display: inline-block;
+            padding: 18px 28px;
+            background: linear-gradient(90deg, #e0eafc 60%, #cfdef3 100%);
+            color: #3498db;
+            border: 2.5px dashed #3498db;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.08rem;
+            font-weight: 500;
+            text-align: center;
+            transition: background 0.2s, color 0.2s, border 0.2s;
+            margin-right: 14px;
+        }
+        .upload-box:hover, .upload-box:focus {
+            background: #3498db;
+            color: #fff;
+            border-color: #217dbb;
+            outline: none;
+        }
+        .copyright-footer {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 0;
+            color: #888;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            width: 100vw;
+            padding-bottom: 18px;
+        }
+        .telegram-link {
+            color: #229ed9;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .telegram-link:hover {
+            color: #176b8a;
+            text-decoration: underline;
+        }
+        .dark-mode .copyright-footer {
+            color: #bfc9d9 !important;
+        }
+        .dark-mode .telegram-link {
+            color: #6ec6f7 !important;
+        }
+        .dark-mode body, .dark-mode {
+            background: #181c24 !important;
+            color: #f7fbfd !important;
+        }
+        .dark-mode .main-bg {
+            background: linear-gradient(135deg, #232946 0%, #1a1a2e 50%, #181c24 100%) !important;
+        }
+        .dark-mode .register-form {
+            background: #232946 !important;
+            color: #f7fbfd !important;
+            border: 1.5px solid #232946 !important;
+            box-shadow: 0 10px 48px rgba(35, 41, 70, 0.25);
+        }
+        .dark-mode .register-form label {
+            color: #a5b4fc !important;
+        }
+        .dark-mode .register-form input,
+        .dark-mode .register-form select {
+            background: #181c24 !important;
+            color: #f7fbfd !important;
+            border: 1.5px solid #232946 !important;
+        }
+        .dark-mode .register-form input:focus,
+        .dark-mode .register-form select:focus {
+            border: 1.5px solid #a5b4fc !important;
+            box-shadow: 0 0 0 2px #232946 !important;
+        }
+        .dark-mode .register-form button {
+            background: linear-gradient(90deg, #232946 60%, #2ecc71 100%) !important;
+            color: #fff !important;
+        }
+        .dark-mode .register-form button:hover {
+            background: #181c24 !important;
+        }
+        .dark-mode .file-upload-wrapper {
+            background: #181c24 !important;
+            border: 1.5px solid #232946 !important;
+        }
+        .dark-mode .upload-box {
+            background: linear-gradient(90deg, #232946 60%, #232946 100%) !important;
+            color: #a5b4fc !important;
+            border: 2.5px dashed #a5b4fc !important;
+        }
+        .dark-mode .upload-box:hover, .dark-mode .upload-box:focus {
+            background: #a5b4fc !important;
+            color: #232946 !important;
+            border-color: #fff !important;
+        }
+        .dark-mode #file-upload-label {
+            color: #bfc9d9 !important;
+        }
+        .dark-mode #register-message {
+            color: #f7fbfd !important;
+        }
+        .switch-link {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: #3498db;
+            text-decoration: none;
+            font-size: 15px;
+        }
+        .switch-link:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 600px) {
+            .register-form {
+                padding: 18px 4vw 18px 4vw;
+                max-width: 98vw;
+                min-width: unset;
+            }
+        }
+    </style>
+    <script type="module">
+        const fileInput = document.getElementById('certificate');
+        const fileLabel = document.getElementById('file-upload-label');
+        const uploadBox = document.querySelector('.upload-box');        
+
+			uploadBox.addEventListener('keydown', function(e) {
+			    if (e.key === 'Enter' || e.key === ' ') {
+			        fileInput.click();
+			    }
+			});
+			fileInput.addEventListener('change', function() {
+			    if (fileInput.files.length > 0) {
+			        fileLabel.textContent = fileInput.files[0].name;
+			    } else {
+			        fileLabel.textContent = 'No file chosen';
+			    }
+			});
+
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabaseUrl = "https://jurgrpqwyilfdpzbzfrd.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1cmdycHF3eWlsZmRwemJ6ZnJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5NDM3NTYsImV4cCI6MjA3MTUxOTc1Nn0.1E-1XaNMTuHGUpgVknyWxiiYXArdDCR9yXa8QzOms5E";
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+let email = localStorage.getItem("email");
+let userId = localStorage.getItem("userId");
+
+document.querySelector(".register-form").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const age = document.getElementById("age").value;
+    const grade = document.getElementById("grade").value;
+
+    // get multiple interests
+    const interestSelect = document.getElementById("interest");
+    const interests = Array.from(interestSelect.selectedOptions).map(opt => opt.value).join(",");
+    localStorage.setItem("interests", JSON.stringify(Array.from(interestSelect.selectedOptions).map(opt => opt.value)));
+
+    const certificate = document.getElementById("certificate").files[0];
+    const message = document.getElementById("register-message");
+
+    if (!name || !age || !grade || interests.length === 0) {
+        message.style.color = "#e74c3c";
+        message.textContent = "Please fill all required fields.";
+        return;
+    }
+
+    // Upload certificate to storage (optional)
+    let certificateUrl = null;
+    if (certificate) {
+        const { data, error } = await supabase.storage
+            .from("certificates")
+            .upload(`cert_${userId}_name_${certificate.name}`, certificate);
+
+        if (error) {
+            console.error("Upload error:", error.message);
+        } else {
+            const { data: publicUrl } = supabase.storage
+                .from("certificates")
+                .getPublicUrl(data.path);
+            certificateUrl = publicUrl.publicUrl;
+        }
+    }
+
+    // Insert into Supabase (interests as array)
+    const { data, error } = await supabase
+        .from("Users basic information")
+        .insert([
+            {
+                user_id: userId,
+                Email: email,
+                Name: name,
+                Age: age,
+                Grade: grade,
+                FOI: interests, // array
+                certificate: certificateUrl
+            }
+        ]);
+
+    if (error) {
+        message.style.color = "#e74c3c";
+        message.textContent = "Error: " + error.message;
+        console.error(error);
+    } else {
+        message.style.color = "#27ae60";
+        message.textContent = "Registration successful!";
+        console.log("Inserted:", data);
+        window.location.href = "index.html";
+    }
+});
+
+    </script>
+    <script src = "script.js"></script>
+</body>
+</html>

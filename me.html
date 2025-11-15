@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - DevCommunity</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="page-header">
+            <h1>Profile</h1>
+        </header>
+        
+        <main class="page-content">
+            <div class="profile-container">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <img src="https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop&crop=face" alt="Profile" id="profile-image">
+                        <div class="profile-status online"></div>
+                    </div>
+                    <div class="profile-info">
+                        <h2 id="profile-username">John Doe</h2>
+                        <p id="profile-title">Senior Full Stack Developer</p>
+                        <p id="profile-description">Passionate about creating scalable web applications and mentoring junior developers. Love working with React, Node.js, and cloud technologies.</p>
+                    </div>
+                </div>
+                
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">127</span>
+                        <span class="stat-label">Projects</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">1.2k</span>
+                        <span class="stat-label">Followers</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">89</span>
+                        <span class="stat-label">Following</span>
+                    </div>
+                </div>
+                
+                <div class="profile-actions">
+                    <button class="btn btn-primary">Edit Profile</button>
+                    <button class="btn btn-secondary">Settings</button>
+                    <button class="btn btn-secondary" onclick="signOutFF()">Sign out</button>
+                </div>
+                
+                <div class="profile-sections">
+                    <div class="profile-section">
+                        <h3>Skills</h3>
+                        <div class="skills-list">
+                            <span class="skill-tag">JavaScript</span>
+                            <span class="skill-tag">React</span>
+                            <span class="skill-tag">Node.js</span>
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">AWS</span>
+                            <span class="skill-tag">Docker</span>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-section">
+                        <h3>Recent Activity</h3>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <span class="activity-text">Completed React Performance Course</span>
+                                <span class="activity-time">2 hours ago</span>
+                            </div>
+                            <div class="activity-item">
+                                <span class="activity-text">Published new blog post</span>
+                                <span class="activity-time">1 day ago</span>
+                            </div>
+                            <div class="activity-item">
+                                <span class="activity-text">Joined Frontend Masters group</span>
+                                <span class="activity-time">3 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="home.html" class="nav-item">
+                <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="nav-label">Home</span>
+            </a>
+            
+            <a href="media.html" class="nav-item">
+                <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M23 7L16 12L23 17V7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span class="nav-label">Media</span>
+            </a>
+            
+            <a href="chat.html" class="nav-item">
+                <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="nav-label">Chat</span>
+            </a>
+            
+            <a href="me.html" class="nav-item active">
+                <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span class="nav-label">Me</span>
+            </a>
+        </nav>
+    </div>
+  <script type="module">
+    import { 
+      initializeApp 
+    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { 
+      getAuth, 
+      signOut, 
+      onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAxMSbx5OoHAav-st3h8DbCUZ9aZCcHnI8",
+      authDomain: "programming-community-80d94.firebaseapp.com",
+      projectId: "programming-community-80d94",
+      storageBucket: "programming-community-80d94.firebasestorage.app",
+      messagingSenderId: "103513211773",
+      appId: "1:103513211773:web:cb90e77287f005b7870214",
+      measurementId: "G-MMZD11XDNK"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);    
+    
+
+window.signOutFF = () => {    
+// Sign out the current user
+signOut(auth)
+  .then(() => {
+    console.log("User signed out successfully!");
+    // You can redirect or update UI here
+    window.location.href = "signup.html";
+})
+.catch((error) => {
+   console.error("Error signing out:", error);
+});
+}
+    
+ </script>
+<script type="module">
+let userId = localStorage.getItem("userId");
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabaseUrl = "https://jurgrpqwyilfdpzbzfrd.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1cmdycHF3eWlsZmRwemJ6ZnJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5NDM3NTYsImV4cCI6MjA3MTUxOTc1Nn0.1E-1XaNMTuHGUpgVknyWxiiYXArdDCR9yXa8QzOms5E";
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+const ImageEle = document.getElementById("profile-image");
+const NameEle = document.getElementById("profile-username");
+const ShortDesEle = document.getElementById("profile-title");
+const ProDesEle = document.getElementById("profile-description");
+
+async function loadUserProfile() {
+  if (!userId) {
+    console.error("No userId found in localStorage");
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from("Users basic information")
+    .select("user_id, Name, Profile_Description, profile_image, Short_Description")
+    .eq("user_id", userId)
+    .single();
+
+  if (error) {
+    console.error("Error fetching user data:", error);
+    console.log(JSON.stringify(error, null, 2));
+    return;
+  }
+
+  if (data) {
+     ImageEle.src = data.profile_image|| "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSWZXex_C1BPKsEDyfKMKPuipvCM58nStVAI1LS1LXMw&s=10";
+     NameEle.textContent = data.Name;
+     ShortDesEle.textContent = data.Short_Description;
+     ProDesEle.textContent = data.Profile_Description;
+  }
+}
+
+loadUserProfile();
+</script>
+    <script src="me.js"></script>
+</body>
+</html>

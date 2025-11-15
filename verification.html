@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Verification</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="/images/Icon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 450px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #6e8efb;
+            padding: 30px 20px;
+            text-align: center;
+            color: white;
+        }
+        
+        .header h2 {
+            font-weight: 600;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .form-container {
+            padding: 30px;
+        }
+        
+        .info-text {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #555;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #444;
+        }
+        
+        .code-inputs {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        
+        .code-inputs input {
+            width: 55px;
+            height: 55px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: #fff;
+            transition: all 0.3s;
+        }
+        
+        .code-inputs input:focus {
+            border-color: #6e8efb;
+            box-shadow: 0 0 10px rgba(110, 142, 251, 0.3);
+            outline: none;
+        }
+        
+        .timer {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 15px;
+            color: #e74c3c;
+            font-weight: 500;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+        
+        button {
+            padding: 14px 25px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .verify-btn {
+            background: #6e8efb;
+            color: white;
+            flex: 1;
+            margin-right: 10px;
+        }
+        
+        .verify-btn:hover {
+            background: #5a7dfa;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(110, 142, 251, 0.4);
+        }
+        
+        .resend-btn {
+            background: transparent;
+            color: #6e8efb;
+            border: 1px solid #6e8efb;
+        }
+        
+        .resend-btn:hover {
+            background: rgba(110, 142, 251, 0.1);
+        }
+        
+        .resend-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-size: 14px;
+            border-top: 1px solid #eee;
+        }
+        
+        .footer a {
+            color: #6e8efb;
+            text-decoration: none;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                border-radius: 15px;
+            }
+            
+            .code-inputs input {
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+            }
+            
+            .actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .verify-btn {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Two-Step Verification</h2>
+            <p>Enter the 6-digit code sent to your device</p>
+        </div>
+        
+        <div class="form-container">
+            <p class="info-text">For your security, we've sent a verification code to your email and phone. Please enter it below to continue.</p>
+            
+            <form id="verification-form">
+                <div class="input-group">
+                    <label>Verification Code</label>
+                    <div class="code-inputs">
+                        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" autofocus>
+                        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+                        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+                        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+                        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+                        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+                    </div>
+                </div>
+                
+                <div class="timer">
+                    <i class="fas fa-clock"></i> Code expires in: <span id="countdown">05:00</span>
+                </div>
+                
+                <div class="actions">
+                    <button type="submit" class="verify-btn">
+                        <i class="fas fa-shield-check"></i> Verify Code
+                    </button>
+                    <button type="button" class="resend-btn" id="resend-btn">
+                        <i class="fas fa-redo"></i> Resend Code
+                    </button>
+                </div>
+                <div id="message"></div>
+            </form>
+        </div>
+        
+        <div class="footer">
+            Need help? <a href="#">Contact Support</a>
+        </div>
+    </div>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>  
+  <script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, fetchSignInMethodsForEmail } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+// Your Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAxMSbx5OoHAav-st3h8DbCUZ9aZCcHnI8",
+  authDomain: "programming-community-80d94.firebaseapp.com",
+  projectId: "programming-community-80d94",
+  storageBucket: "programming-community-80d94.firebasestorage.app",
+  messagingSenderId: "103513211773",
+  appId: "1:103513211773:web:cb90e77287f005b7870214",
+  measurementId: "G-MMZD11XDNK"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+      
+      
+ 
+      let verificationCode;
+     (function() {
+         emailjs.init("nm2xF2BwNfdoQaYyr"); // Replace with your actual EmailJS Public Key
+      })();        
+      const userEmail = localStorage.getItem("email");
+      const userPassword = localStorage.getItem("password");
+            
+      function sendRandom() {
+         verificationCode = Math.floor(Math.random()* 900000)+100000;
+         var params = {									        
+				    email: userEmail, 
+				  	 code: verificationCode // Pass the generated code
+				  };
+									
+			 	 emailjs.send("service_5ad450h","template_h6gd9tv", params)
+			   .then(function(response) {
+					  	alert("Verification email sent successfully! Check your inbox.");
+						  
+				  })
+				  .catch(function(error) {
+						  alert("Failed to send email. Error: " + JSON.stringify(error));
+					  });
+								    
+       }sendRandom();
+   
+    window.finishVerification = () => {  
+    const message = document.getElementById("message");
+      // Create user with email and a temporary password
+     createUserWithEmailAndPassword(auth, userEmail, userPassword)
+    .then((userCredential) => {
+      if (!userCredential) return; // If user exists, don't continue
+      const user = userCredential.user;     
+      localStorage.setItem("userId", user.uid);
+      window.location.href = "register.html";
+
+    })
+    .catch((error) => {
+      message.innerText = "Error: " + error.message;
+    });        
+    }  
+      
+        document.addEventListener('DOMContentLoaded', function() {           
+            const inputs = document.querySelectorAll('.code-inputs input');
+            const form = document.getElementById('verification-form');
+            const countdownEl = document.getElementById('countdown');
+            const resendBtn = document.getElementById('resend-btn');
+                                    
+            // Focus management for code inputs
+            inputs.forEach((input, index) => {
+                input.addEventListener('input', () => {
+                    if (input.value && index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    }
+                });
+                
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && !input.value && index > 0) {
+                        inputs[index - 1].focus();
+                    }
+                });
+            });
+            
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                let code = '';
+                inputs.forEach(input => {
+                    code += input.value;
+                });
+                
+                if (code.length === 6) {
+                    // Simulate verification process
+                   if(verificationCode != code) {
+                        alert("the verification code you insert is wrong!!! please try again letter");
+                        return;
+                    }
+                    const verifyBtn = form.querySelector('.verify-btn');
+                    verifyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+                    verifyBtn.disabled = true;                                         
+                                                     
+                    setTimeout(() => {
+                        alert('Verification successful! Code: ' + code);
+                        verifyBtn.innerHTML = '<i class="fas fa-shield-check"></i> Verify Code';
+                        verifyBtn.disabled = false;                   
+                        localStorage.setItem("password", "");
+                        finishVerification();                        
+                    }, 1500);
+                } else {
+                    alert('Please enter the complete 6-digit code');
+                }
+            });
+            
+            // Countdown timer
+            let timeLeft = 5 * 60; // 5 minutes in seconds
+            const countdown = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    countdownEl.innerHTML = 'Expired';
+                    countdownEl.style.color = '#e74c3c';
+                    resendBtn.disabled = false;
+                } else {
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    countdownEl.innerHTML = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    timeLeft--;
+                }
+            }, 1000);
+            
+            // Resend code functionality
+            resendBtn.addEventListener('click', function() {
+                if (resendBtn.disabled) return;
+                
+                resendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                resendBtn.disabled = true;
+                
+                // Reset timer
+                timeLeft = 5 * 60;
+                countdownEl.style.color = '#e74c3c';
+                
+                setTimeout(() => {                    
+                    alert('New verification code sent!');
+                    resendBtn.innerHTML = '<i class="fas fa-redo"></i> Resend Code';
+                    
+                    sendRandom();
+                    // Re-enable after 30 seconds
+                    setTimeout(() => {
+                        resendBtn.disabled = false;
+                    }, 30000);
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+</html>

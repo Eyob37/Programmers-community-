@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Programmers Community</title>
+  <link rel="icon" type="image/x-icon" href="/images/Icon.png">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+    #logoutBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    #logoutBtn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  
+
+  <script type="module">
+    import { 
+      initializeApp 
+    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { 
+      getAuth, 
+      signOut, 
+      onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAxMSbx5OoHAav-st3h8DbCUZ9aZCcHnI8",
+      authDomain: "programming-community-80d94.firebaseapp.com",
+      projectId: "programming-community-80d94",
+      storageBucket: "programming-community-80d94.firebasestorage.app",
+      messagingSenderId: "103513211773",
+      appId: "1:103513211773:web:cb90e77287f005b7870214",
+      measurementId: "G-MMZD11XDNK"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Monitor authentication state
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "signup.html";
+      }else{
+          if(localStorage.getItem('allDone')){
+        window.location.href = "user interface.html";
+    }else{
+        window.location.href = "manage Question.html";
+    }    
+      }
+    });
+    
+  </script>
+</body>
+</html>

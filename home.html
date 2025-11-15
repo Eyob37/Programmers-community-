@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - DevCommunity</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="page-header">
+            <div class="search-container">
+                <div class="search-bar">
+                    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M21 21L15.0001 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <input type="text" placeholder="Search developers, projects..." class="search-input" id="search-input">
+                </div>
+            </div>
+             <div class="filter-select-container">
+                    <select class="filter-select" id="filter-select">
+                        <option value="user-id">by user id</option>
+                        <option value="name">by name</option>
+                        <option value="field">by field</option>
+                    </select>
+                    
+               </div>
+        </header>
+        
+        <main class="page-content">
+            <div class="welcome-section">
+                <h1>Welcome to DevCommunity</h1>
+                <p>Connect with developers worldwide</p>
+            </div>
+            
+            <div class="users-section">
+                <h2>Active Developers</h2>
+                <div class="users-grid" id="users-container">
+                    <div class="user-card" data-user="sarah-chen">
+                        <div class="user-avatar">
+                            <img src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop&crop=face" alt="User">
+                        </div>
+                        <div class="user-info">
+                            <h3>Sarah Chen</h3>
+                            <p>Full Stack Developer</p>
+                            <div class="user-status online"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="user-card" data-user="alex-rodriguez">
+                        <div class="user-avatar">
+                            <img src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop&crop=face" alt="User">
+                        </div>
+                        <div class="user-info">
+                            <h3>Alex Rodriguez</h3>
+                            <p>Frontend Specialist</p>
+                            <div class="user-status online"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="user-card" data-user="jordan-kim">
+                        <div class="user-avatar">
+                            <img src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop&crop=face" alt="User">
+                        </div>
+                        <div class="user-info">
+                            <h3>Jordan Kim</h3>
+                            <p>DevOps Engineer</p>
+                            <div class="user-status away"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="user-card" data-user="maya-patel">
+                        <div class="user-avatar">
+                            <img src="https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop&crop=face" alt="User">
+                        </div>
+                        <div class="user-info">
+                            <h3>Maya Patel</h3>
+                            <p>UI/UX Designer</p>
+                            <div class="user-status online"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="home.html" class="nav-item active">
+                <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="nav-label">Home</span>
+            </a>
+            
+            <a href="media.html" class="nav-item">
+                <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M23 7L16 12L23 17V7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span class="nav-label">Media</span>
+            </a>
+            
+            <a href="chat.html" class="nav-item">
+                <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="nav-label">Chat</span>
+            </a>
+            
+            <a href="me.html" class="nav-item">
+                <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span class="nav-label">Me</span>
+            </a>
+        </nav>
+    </div>
+    <script>
+    // Simple functionality to demonstrate the filter select
+    document.getElementById('filter-select').addEventListener('change', function() {
+        const placeholderTexts = {
+            'user-id': 'Search by user ID...',
+            'name': 'Search by name...',
+            'field': 'Search by field...'
+        };
+        
+        document.getElementById('search-input').placeholder = placeholderTexts[this.value];
+    });
+</script>
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabaseUrl = "https://jurgrpqwyilfdpzbzfrd.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1cmdycHF3eWlsZmRwemJ6ZnJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5NDM3NTYsImV4cCI6MjA3MTUxOTc1Nn0.1E-1XaNMTuHGUpgVknyWxiiYXArdDCR9yXa8QzOms5E";
+
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+let userId = localStorage.getItem("userId");
+const usersContainer = document.getElementById("users-container");
+
+// Fetch top 5 users excluding the logged-in user
+const { data: users, error } = await supabase
+  .from("Users basic information")
+  .select("user_id, Name, Profile_Description, profile_image, Short_Description")
+  .neq("user_id", userId)
+  .limit(5);
+
+if (error) {
+  console.error("Error fetching users:", error);
+} else {
+  // Clear existing content
+  usersContainer.innerHTML = "";
+
+  if (users.length === 0) {
+    usersContainer.innerHTML = "<p>No other users available.</p>";
+  } else {
+    users.forEach(user => {
+      const userCard = document.createElement("div");
+      userCard.className = "user-card";
+      userCard.setAttribute("data-user", user.user_id);
+
+      userCard.innerHTML = `
+        <div class="user-avatar">
+          <img src="${user.profile_image || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSWZXex_C1BPKsEDyfKMKPuipvCM58nStVAI1LS1LXMw&s=10"}" alt="User">
+        </div>
+        <div class="user-info">
+          <h3>${user.Name}</h3>
+          <p>${user.Short_Description || "Developer"}</p>
+          <div class="user-status online"></div>
+        </div>
+      `;
+
+      usersContainer.appendChild(userCard);
+    });
+  }
+}
+</script>
+    <script src="home.js"></script>
+</body>
+</html>

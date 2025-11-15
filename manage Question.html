@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questions manager</title>
+    <style>
+        body {
+            background: linear-gradient(to right bottom, #20203f, #3f1527);
+            background-attachment: fixed;
+            color: white;
+            text-align: center;
+            font-family: sans-serif;
+        }
+        .main-container div {
+            width: 90%;
+            min-height: 30px;
+            border-radius: 10px;
+            border: 2px solid blue;
+            margin: 10px auto;
+            display: flex;       
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            position: relative;
+            padding: 10px;
+            background: cyan;
+            color: red;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .fieldDiv div {
+            width: 95%;
+            margin: 5px auto;      
+            background: #f2f2f2eb;
+            border-radius: 2px;
+            color: black;
+            font-size: 0.7rem;
+            text-align: left;
+        }
+        .showMore {
+            position: absolute;
+            right: 5px;   
+            top: 10px;    
+            background: transparent;
+            border: none;
+            font-size: 20px;
+            z-index: 2;
+            cursor: pointer;
+        }
+        .nothing {
+            display: none;
+        }
+        #goNext{
+            position: fixed;
+            bottom: 2px;
+            right: 2px;
+            width: 130px;
+            height: 25px;
+            border-radius: 8px;
+            background: #63a2a998;
+            color: #ff001f;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+    </style>  
+</head>
+<body>
+    <h2>Welcome to this page</h2>
+    <p>Now, now you have to answer the Questions that you will see.</p>
+    <div class="main-container"></div>
+    <div class="nothing">There is nothing in here</div>
+    <button id="goNext">Next</button>
+    <script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabaseUrl = "https://jurgrpqwyilfdpzbzfrd.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1cmdycHF3eWlsZmRwemJ6ZnJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5NDM3NTYsImV4cCI6MjA3MTUxOTc1Nn0.1E-1XaNMTuHGUpgVknyWxiiYXArdDCR9yXa8QzOms5E";
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+let userId = localStorage.getItem("userId");                                
+
+        const GoNext = document.getElementById("goNext");
+        GoNext.disabled = true;
+        const MC = document.querySelector(".main-container");  
+        const NC = document.querySelector(".nothing");
+        let WhichDone = JSON.parse(localStorage.getItem("WhichDone")) || {};
+        const interestsArr = JSON.parse(localStorage.getItem("interests")) || [];
+        const Score = JSON.parse(localStorage.getItem("score")) || {};
+        let Scores = JSON.parse(localStorage.getItem("scores")) || [];
+        if (!Array.isArray(Scores)) Scores = [];
+
+        function show() {
+            if (interestsArr.length < 1) return showNothing();
+
+            NC.style.display = "none";
+            MC.style.display = "block";
+
+            MC.innerHTML = ""; // clear previous
+
+            interestsArr.forEach((interest, i) => {
+                let div = document.createElement("div");
+                div.classList.add("fieldDiv");
+                div.textContent = interest;
+                MC.appendChild(div);                
+
+                // Show More button
+                let button = document.createElement("button");
+                button.classList.add("showMore");
+                button.textContent = "🔻";
+                button.dataset.showed = "false";
+                div.appendChild(button);
+
+                // Click on main div
+                   const clickHandler = () => handleDivClick(interest);
+                div.addEventListener("click", clickHandler);
+
+                if (WhichDone[interest]){
+                   div.style.background = "#71ff6a";
+                   div.removeEventListener("click", clickHandler);
+                }
+
+                // Click on show more button
+                button.addEventListener("click", (event) => {
+                    event.stopPropagation();
+
+                    let divChild = div.querySelector(`.item-${i}`);
+
+                    if (button.dataset.showed === "true") {
+                        if (divChild) divChild.remove();
+                        button.dataset.showed = "false";
+                        button.textContent = "🔻";
+                    } else {
+                        button.dataset.showed = "true";
+                        button.textContent = "🔺";
+
+                        const newDiv = document.createElement("div");
+                        newDiv.classList.add(`item-${i}`);
+                        newDiv.style.marginTop = "5px";
+
+                        let ThisObject = Scores.find(item => item.field === interest);
+
+                        if (!ThisObject) {
+                            newDiv.textContent = "Nothing in here";
+                        } else {
+                            let html = `
+                                <h4>Score Details:</h4>
+                                <ol>
+                            `;
+                            for (const key in ThisObject) {
+                                html += `<li><strong>${key}:</strong> ${ThisObject[key]}</li>`;
+                            }
+                            html += `</ol>`;
+                            newDiv.innerHTML = html;
+                        }
+
+                        div.appendChild(newDiv);
+                    }
+                });
+            });
+         }
+         
+       function handleDivClick(interest) {
+            localStorage.setItem("field", interest);
+            window.location.href = "./Question/first.html";
+        }
+
+        function showNothing() {
+            NC.style.display = "block";
+            MC.style.display = "none";    
+        }
+
+        async function finalFunction() {
+		   		const { data, error } = await supabase
+				  .from('Users basic information')
+				  .update({ "Score": JSON.stringify(Scores)}) // only update this column
+				  .eq('user_id', userId); // condition for which row(s) to update   
+				  
+				  localStorage.setItem("allDone", true);
+				  
+				  window.location.href = "edit profile picture.html";        
+        }
+
+        function checkAllDone() {
+            for (const key in WhichDone) {
+                if (!(WhichDone[key]))  return;                   
+            }
+            GoNext.disabled = false;
+            GoNext.style.background = "cyan";
+            GoNext.addEventListener("click", finalFunction);
+        }
+
+        function updateScores() {
+            if (Scores.length < 1) {
+                Scores.push(Score);
+                localStorage.setItem("scores", JSON.stringify(Scores));
+                return;
+            }
+            let exists = Scores.some(s => s.field === Score.field);	
+            if (!exists) Scores.push(Score);
+            localStorage.setItem("scores", JSON.stringify(Scores));
+        }
+
+        function generateWhichDone() {
+            for (const key of interestsArr) {
+                if (!(key in WhichDone)) WhichDone[key] = false;
+            }
+            localStorage.setItem("WhichDone", JSON.stringify(WhichDone));
+        }
+
+        if (Object.keys(WhichDone).length < interestsArr.length) generateWhichDone();
+        if (Object.keys(Score).length > 0) updateScores();
+        if (interestsArr.length > 0) show();
+        else showNothing();
+        
+        checkAllDone();
+    </script>
+</body>
+</html>
