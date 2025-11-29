@@ -3,336 +3,655 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Editor</title>
+    <title>User Profile Editor</title>
     <style>
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Save Button */
+        #saveBtn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 16px 32px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(46, 204, 113, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        #saveBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(46, 204, 113, 0.6);
+            background: linear-gradient(135deg, #27ae60, #219653);
+        }
+
+        #saveBtn:active {
+            transform: translateY(0);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+        }
+
+        #saveBtn::after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+            background-size: contain;
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-btn:active {
+            transform: scale(0.95);
+        }
+
+        .back-btn::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            border-left: 3px solid white;
+            border-bottom: 3px solid white;
+            transform: rotate(45deg);
+            margin-right: 3px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #saveBtn {
+                bottom: 20px;
+                right: 20px;
+                padding: 14px 28px;
+                font-size: 16px;
+            }
+
+            .back-btn {
+                top: 20px;
+                left: 20px;
+                width: 50px;
+                height: 50px;
+            }
+        }
+        :root {
+            --primary-color: #4a6cf7;
+            --secondary-color: #6c757d;
+            --background-color: #1a1d29;
+            --card-color: #252a40;
+            --text-color: #e4e6f3;
+            --border-color: #3a4162;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --border-radius: 8px;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background-color: #f5f7fa;
-            color: #333;
+            background-color: var(--background-color);
+            color: var(--text-color);
             line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
         }
-        
-        .profile-editor-container {
+
+        .profile-container {
             max-width: 800px;
-            margin: 40px auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            padding: 30px;
-        }
-        
-        .profile-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .profile-header h1 {
-            color: #2c3e50;
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-        
-        .profile-header p {
-            color: #7f8c8d;
-            font-size: 16px;
-        }
-        
-        .profile-content {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-        
-        @media (min-width: 768px) {
-            .profile-content {
-                flex-direction: row;
-            }
-        }
-        
-        .profile-picture-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .profile-picture-container {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
+            margin: 0 auto;
+            background-color: var(--card-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
             overflow: hidden;
-            border: 4px solid #e0e6ed;
-            margin-bottom: 20px;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary-color), #6a82fb);
+            color: white;
+            padding: 30px;
+            text-align: center;
             position: relative;
         }
-        
-        .profile-picture {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            background-color: #ecf0f1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #bdc3c7;
-            font-size: 50px;
-        }
-        
-        .profile-picture-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            width: 100%;
-            max-width: 200px;
-        }
-        
-        .btn {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary {
-            background-color: #3498db;
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background-color: #2980b9;
-        }
-        
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid #3498db;
-            color: #3498db;
-        }
-        
-        .btn-outline:hover {
-            background-color: #ecf7fe;
-        }
-        
-        .profile-details-section {
-            flex: 2;
-        }
-        
-        .form-group {
+
+        .profile-picture-container {
+            position: relative;
+            display: inline-block;
             margin-bottom: 20px;
         }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-        
-        textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            resize: vertical;
-            min-height: 120px;
-            font-size: 16px;
-            transition: border 0.3s;
-        }
-       #shortDescription{
-           min-height: 50px;
-       }
-        textarea:focus {
-            outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-        }
-        
-        .char-count {
-            text-align: right;
-            font-size: 14px;
-            color: #7f8c8d;
-            margin-top: 5px;
-        }
-        
-        .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 15px;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-        }
-        
-        .btn-success {
-            background-color: #2ecc71;
-            color: white;
-        }
-        
-        .btn-success:hover {
-            background-color: #27ae60;
-        }
-        
-        .btn-cancel {
-            background-color: #e74c3c;
-            color: white;
-        }
-        
-        .btn-cancel:hover {
-            background-color: #c0392b;
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        #fileInput {
-            display: none;
-        }
-        
-        .profile-preview {
-            text-align: center;
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #3498db;
-        }
-        
-        .preview-title {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: #2c3e50;
-        }
-        
-        .preview-content {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .preview-picture {
-            width: 80px;
-            height: 80px;
+
+        .profile-picture {
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #ddd;
+            border: 4px solid white;
+            box-shadow: var(--shadow);
         }
-        
-        .preview-description {
-            max-width: 400px;
-            text-align: left;
+
+        .edit-picture-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .edit-picture-btn:hover {
+            background-color: #3a5bd9;
+            transform: scale(1.1);
+        }
+
+        .user-info {
+            margin-top: 10px;
+        }
+
+        .user-id {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        .name {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .name-edit {
+            display: none;
+            width: 200px;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .edit-name-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.3s ease;
+            opacity: 0.8;
+        }
+
+        .edit-name-btn:hover {
+            opacity: 1;
+        }
+
+        .rating {
+            margin: 15px 0;
+        }
+
+        .star {
+            color: #ffc107;
+            font-size: 1.5rem;
+            margin: 0 2px;
+        }
+
+        .profile-content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .edit-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.3s ease;
+        }
+
+        .edit-btn:hover {
+            color: #3a5bd9;
+        }
+
+        .content-display {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            min-height: 50px;
+        }
+
+        .content-edit {
+            display: none;
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .save-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .save-btn:hover {
+            background-color: #3a5bd9;
+        }
+
+        .cancel-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 10px;
+            margin-left: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .cancel-btn:hover {
+            background-color: #5a6268;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                padding: 20px;
+            }
+            
+            .profile-picture {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .profile-content {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .profile-header {
+                padding: 15px;
+            }
+            
+            .profile-picture {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .name {
+                font-size: 1.5rem;
+            }
+            
+            .profile-content {
+                padding: 15px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="profile-editor-container">
+    <div class="profile-container">
         <div class="profile-header">
-            <h1>Edit Your Profile</h1>
-            <p>Update your profile picture and description</p>
+            <div class="profile-picture-container">
+                <img id="profile-picture" src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-picture">
+                <button class="edit-picture-btn" id="edit-picture-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                    </svg>
+                </button>
+                <input type="file" id="file-input" class="file-input" accept="image/*">
+            </div>
+            <div class="user-info">
+                <div class="user-id" id="user-id">ID: #USR-2023-001</div>
+                <div class="name">
+                    <span id="name-display">John Doe</span>
+                    <input type="text" class="name-edit" id="name-edit" maxlength="50">
+                    <button class="edit-name-btn" id="edit-name-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                        </svg>
+                    </button>
+                </div>
+               
+            </div>
         </div>
         
         <div class="profile-content">
-            <div class="profile-picture-section">
-                <div class="profile-picture-container">
-                    <div class="profile-picture" id="profilePicture">
-                        <i class="fas fa-user"></i>
-                    </div>
+            <div class="section">
+                <div class="section-title">
+                    Short Description
+                    <button class="edit-btn" id="edit-short-desc-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                        </svg>
+                        Edit
+                    </button>
                 </div>
-                
-                <div class="profile-picture-actions">
-                    <button class="btn btn-primary" id="uploadBtn">Upload Photo</button>
-                    <button class="btn btn-outline" id="removeBtn">Remove Photo</button>
+                <div class="content-display" id="short-description-display">
+                    Passionate developer with 5+ years of experience in web technologies.
                 </div>
-                
-                <input type="file" id="fileInput" accept="image/*">
+                <textarea class="content-edit" id="short-description-edit"></textarea>
+                <button class="save-btn" id="save-short-desc-btn" style="display: none;">Save</button>
+                <button class="cancel-btn" id="cancel-short-desc-btn" style="display: none;">Cancel</button>
             </div>
             
-            <div class="profile-details-section">
-                <div class="form-group">
-                    <label for="shortDescription">short Description</label>
-                    <textarea id="shortDescription" placeholder="Tell us about yourself...">Senior Full Stack Developer</textarea>
-                    <label for="profileDescription">Profile Description</label>
-                    <textarea id="profileDescription" placeholder="Tell us about yourself...">Passionate about creating scalable web applications and mentoring junior developers. Love working with React, Node.js, and cloud technologies.</textarea>
-                    <div class="char-count"><span id="charCount">0</span>/500 characters</div>
+            <div class="section">
+                <div class="section-title">
+                    Full Profile Description
+                    <button class="edit-btn" id="edit-full-desc-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                        </svg>
+                        Edit
+                    </button>
                 </div>
-                
-                <div class="form-actions">
-                    
-                    <button class="btn btn-success" id="saveBtn">Save Changes</button>
+                <div class="content-display" id="full-description-display">
+                    I'm a full-stack developer with over 5 years of experience specializing in JavaScript, React, Node.js, and cloud technologies. I'm passionate about creating efficient, scalable solutions and enjoy mentoring junior developers. In my free time, I contribute to open-source projects and explore new technologies.
                 </div>
-            </div>
-        </div>
-        
-        <div class="profile-preview hidden" id="profilePreview">
-            <div class="preview-title">Profile Preview</div>
-            <div class="preview-content">
-                <img src="" alt="Profile Preview" class="preview-picture" id="previewPicture">
-                <div class="preview-description" id="previewDescription"></div>
+                <textarea class="content-edit" id="full-description-edit"></textarea>
+                <button class="save-btn" id="save-full-desc-btn" style="display: none;">Save</button>
+                <button class="cancel-btn" id="cancel-full-desc-btn" style="display: none;">Cancel</button>
             </div>
         </div>
     </div>
+    
+    <!-- Save Button -->
+    <button id="saveBtn">Save</button>
 
-<script type="module">
+    <!-- Back Button -->
+    <button class="back-btn" onclick="window.location.href='me.html'"></button>
+
+    <script>
+        // User data - in a real app, this would come from your backend
+        const userData = {
+            userId: '#USR-2023-001',
+            name: 'John Doe',
+            shortDescription: 'Passionate developer with 5+ years of experience in web technologies.',
+            fullDescription: "I'm a full-stack developer with over 5 years of experience specializing in JavaScript, React, Node.js, and cloud technologies. I'm passionate about creating efficient, scalable solutions and enjoy mentoring junior developers. In my free time, I contribute to open-source projects and explore new technologies.",
+            rating: 4.5,
+            profilePicture: 'https://via.placeholder.com/150'
+        };
+
+        // DOM Elements
+        const profilePicture = document.getElementById('profile-picture');
+        const editPictureBtn = document.getElementById('edit-picture-btn');
+        const fileInput = document.getElementById('file-input');
+        const userIdElement = document.getElementById('user-id');
+        const nameDisplay = document.getElementById('name-display');
+        const nameEdit = document.getElementById('name-edit');
+        const editNameBtn = document.getElementById('edit-name-btn');               
+        const shortDescriptionDisplay = document.getElementById('short-description-display');
+        const shortDescriptionEdit = document.getElementById('short-description-edit');
+        const editShortDescBtn = document.getElementById('edit-short-desc-btn');
+        const saveShortDescBtn = document.getElementById('save-short-desc-btn');
+        const cancelShortDescBtn = document.getElementById('cancel-short-desc-btn');
+        const fullDescriptionDisplay = document.getElementById('full-description-display');
+        const fullDescriptionEdit = document.getElementById('full-description-edit');
+        const editFullDescBtn = document.getElementById('edit-full-desc-btn');
+        const saveFullDescBtn = document.getElementById('save-full-desc-btn');
+        const cancelFullDescBtn = document.getElementById('cancel-full-desc-btn');
+        const saveBtn = document.getElementById("saveBtn");
+
+        // Initialize the component with user data
+        function initializeProfile() {
+            // Set user data
+            profilePicture.src = userData.profilePicture;
+            userIdElement.textContent = `ID: ${userData.userId}`;
+            nameDisplay.textContent = userData.name;
+            shortDescriptionDisplay.textContent = userData.shortDescription;
+            fullDescriptionDisplay.textContent = userData.fullDescription;            
+            
+            // Set initial values for edit fields
+            nameEdit.value = userData.name;
+            shortDescriptionEdit.value = userData.shortDescription;
+            fullDescriptionEdit.value = userData.fullDescription;
+        }
+
+        // Profile picture upload
+        editPictureBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    profilePicture.src = event.target.result;
+                    // In a real app, you would send this to your backend
+                    console.log('Profile picture updated');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Name editing
+        editNameBtn.addEventListener('click', () => {
+            nameDisplay.style.display = 'none';
+            nameEdit.style.display = 'block';
+            editNameBtn.style.display = 'none';
+            nameEdit.focus();
+        });
+
+        nameEdit.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                saveName();
+            } else if (e.key === 'Escape') {
+                cancelNameEdit();
+            }
+        });
+
+        nameEdit.addEventListener('blur', () => {
+            // Only save if the user actually changed the name
+            if (nameEdit.value.trim() !== userData.name) {
+                saveName();
+            } else {
+                cancelNameEdit();
+            }
+        });
+
+        function saveName() {
+            const newName = nameEdit.value.trim();
+            if (newName) {
+                nameDisplay.textContent = newName;
+                userData.name = newName;
+                // In a real app, you would send this to your backend
+                console.log('Name updated:', newName);
+            }
+            exitNameEditMode();
+        }
+
+        function cancelNameEdit() {
+            nameEdit.value = userData.name;
+            exitNameEditMode();
+        }
+
+        function exitNameEditMode() {
+            nameDisplay.style.display = 'block';
+            nameEdit.style.display = 'none';
+            editNameBtn.style.display = 'flex';
+        }
+
+        // Short description editing
+        editShortDescBtn.addEventListener('click', () => {
+            shortDescriptionDisplay.style.display = 'none';
+            shortDescriptionEdit.style.display = 'block';
+            saveShortDescBtn.style.display = 'inline-block';
+            cancelShortDescBtn.style.display = 'inline-block';
+            editShortDescBtn.style.display = 'none';
+            shortDescriptionEdit.focus();
+        });
+
+        saveShortDescBtn.addEventListener('click', () => {
+            const newDescription = shortDescriptionEdit.value.trim();
+            if (newDescription) {
+                shortDescriptionDisplay.textContent = newDescription;
+                userData.shortDescription = newDescription;
+                // In a real app, you would send this to your backend
+                console.log('Short description updated:', newDescription);
+            }
+            exitEditMode('short');
+        });
+
+        cancelShortDescBtn.addEventListener('click', () => {
+            shortDescriptionEdit.value = userData.shortDescription;
+            exitEditMode('short');
+        });
+
+        // Full description editing
+        editFullDescBtn.addEventListener('click', () => {
+            fullDescriptionDisplay.style.display = 'none';
+            fullDescriptionEdit.style.display = 'block';
+            saveFullDescBtn.style.display = 'inline-block';
+            cancelFullDescBtn.style.display = 'inline-block';
+            editFullDescBtn.style.display = 'none';
+            fullDescriptionEdit.focus();
+        });
+
+        saveFullDescBtn.addEventListener('click', () => {
+            const newDescription = fullDescriptionEdit.value.trim();
+            if (newDescription) {
+                fullDescriptionDisplay.textContent = newDescription;
+                userData.fullDescription = newDescription;
+                // In a real app, you would send this to your backend
+                console.log('Full description updated:', newDescription);
+            }
+            exitEditMode('full');
+        });
+
+        cancelFullDescBtn.addEventListener('click', () => {
+            fullDescriptionEdit.value = userData.fullDescription;
+            exitEditMode('full');
+        });
+
+        // Helper function to exit edit mode
+        function exitEditMode(type) {
+            if (type === 'short') {
+                shortDescriptionDisplay.style.display = 'block';
+                shortDescriptionEdit.style.display = 'none';
+                saveShortDescBtn.style.display = 'none';
+                cancelShortDescBtn.style.display = 'none';
+                editShortDescBtn.style.display = 'flex';
+            } else if (type === 'full') {
+                fullDescriptionDisplay.style.display = 'block';
+                fullDescriptionEdit.style.display = 'none';
+                saveFullDescBtn.style.display = 'none';
+                cancelFullDescBtn.style.display = 'none';
+                editFullDescBtn.style.display = 'flex';
+            }
+        }
+
+        // Initialize the profile when the page loads
+        document.addEventListener('DOMContentLoaded', initializeProfile);
+    </script>
+    <script type="module">
+let userId = localStorage.getItem("userId");
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
 const supabaseUrl = "https://jurgrpqwyilfdpzbzfrd.supabase.co";
-const supabaseKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1cmdycHF3eWlsZmRwemJ6ZnJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5NDM3NTYsImV4cCI6MjA3MTUxOTc1Nn0.1E-1XaNMTuHGUpgVknyWxiiYXArdDCR9yXa8QzOms5E";
-
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1cmdycHF3eWlsZmRwemJ6ZnJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5NDM3NTYsImV4cCI6MjA3MTUxOTc1Nn0.1E-1XaNMTuHGUpgVknyWxiiYXArdDCR9yXa8QzOms5E";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-let userId = localStorage.getItem("userId");
-document.addEventListener("DOMContentLoaded", function () {
-  const profilePicture = document.getElementById("profilePicture");
-  const uploadBtn = document.getElementById("uploadBtn");
-  const removeBtn = document.getElementById("removeBtn");
-  const fileInput = document.getElementById("fileInput");
-  const profileDescription = document.getElementById("profileDescription");
-  const shortDescription = document.getElementById("shortDescription"); // <-- add this input in your HTML
-  const charCount = document.getElementById("charCount");
-  const saveBtn = document.getElementById("saveBtn");
-  const profilePreview = document.getElementById("profilePreview");
-  const previewPicture = document.getElementById("previewPicture");
-  const previewDescription = document.getElementById("previewDescription");
-
-  updateCharCount();
-
-  uploadBtn.addEventListener("click", function () {
-    fileInput.click();
-  });
-
-  fileInput.addEventListener("change", function (e) {
-    if (e.target.files && e.target.files[0]) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        profilePicture.innerHTML = "";
-        profilePicture.style.backgroundImage = `url(${e.target.result})`;
-        profilePicture.style.backgroundSize = "cover";
-        profilePicture.style.backgroundPosition = "center";
-      };
-      reader.readAsDataURL(e.target.files[0]);
-    }
-  });
-
-  removeBtn.addEventListener("click", function () {
-    profilePicture.innerHTML = '<i class="fas fa-user"></i>';
-    profilePicture.style.backgroundImage = "none";
-    fileInput.value = "";
-  });
-
-  profileDescription.addEventListener("input", updateCharCount);
-
   async function uploadImage(file) {
-    const fileName = `profile_${Date.now()}_${file.name}`;
+    const fileName = `profile_${userId}`;
     const { data, error } = await supabase.storage
       .from("Profile") // Bucket name
       .upload(fileName, file);
@@ -351,8 +670,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   saveBtn.addEventListener("click", async function () {
-    const longDescription = profileDescription.value.trim();
-    const shortDesc = shortDescription.value.trim();
+    const name = nameDisplay.textContent.trim();
+    const longDescription = fullDescriptionDisplay.textContent.trim();
+    const shortDesc = shortDescriptionDisplay.textContent.trim();
     const file = fileInput.files[0];
 
     let imageUrl = null;
@@ -364,6 +684,7 @@ document.addEventListener("DOMContentLoaded", function () {
  		const { data, error } = await supabase
 		  .from("Users basic information")
 		  .update({
+		    Name: name,
 		    Short_Description: shortDesc,
 		    Profile_Description: longDescription,
 		    profile_image: imageUrl,
@@ -380,7 +701,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     alert("Profile saved successfully!");
     setTimeout(()=> {
-        window.location.href = "index.html";
+        window.location.href = "me.html";
     }, 3000);
     profilePreview.classList.remove("hidden");
 
@@ -395,28 +716,35 @@ document.addEventListener("DOMContentLoaded", function () {
       longDescription || "No description provided.";
   });
 
-  function updateCharCount() {
-    const count = profileDescription.value.length;
-    charCount.textContent = count;
-
-    if (count > 450) {
-      charCount.style.color = "#e74c3c";
-    } else if (count > 400) {
-      charCount.style.color = "#f39c12";
-    } else {
-      charCount.style.color = "#7f8c8d";
-    }
-
-    if (count > 500) {
-      profileDescription.value = profileDescription.value.substring(0, 500);
-      charCount.textContent = 500;
-      charCount.style.color = "#e74c3c";
-    }
+async function loadUserProfile() {
+  if (!userId) {
+    console.error("No userId found in localStorage");
+    return;
   }
-});
+
+  const { data, error } = await supabase
+    .from("Users basic information")
+    .select("user_id, Name, Profile_Description, profile_image, Short_Description")
+    .eq("user_id", userId)
+    .single();
+
+  if (error) {
+    console.error("Error fetching user data:", error);
+    console.log(JSON.stringify(error, null, 2));
+    return;
+  }
+
+  if (data) {
+     userData.userId = userId;
+     userData.profilePicture = data.profile_image|| "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSWZXex_C1BPKsEDyfKMKPuipvCM58nStVAI1LS1LXMw&s=10";
+     userData.name = data.Name;
+     userData.shortDescription = data.Short_Description;
+     userData.fullDescription = data.Profile_Description;
+     initializeProfile();
+  }
+}
+
+loadUserProfile();
 </script>
-    
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </body>
 </html>
