@@ -681,16 +681,21 @@ const supabase = createClient(supabaseUrl, supabaseKey);
       imageUrl = await uploadImage(file);
     }
 
- 		const { data, error } = await supabase
-		  .from("Users basic information")
-		  .update({
-		    Name: name,
-		    Short_Description: shortDesc,
-		    Profile_Description: longDescription,
-		    profile_image: imageUrl,
-		  })
-		  .eq("user_id", userId); // ✅ Update the row where user_id matches
-     
+ 			let updateFields = {
+			  Name: name,
+			  Short_Description: shortDesc,
+			  Profile_Description: longDescription,
+			};
+			
+			// ⚡ Only add profile_image if IsProfileChange is true
+			if (IsProfileChange) {
+			  updateFields.profile_image = imageUrl;
+			}
+			
+			const { data, error } = await supabase
+			  .from("Users basic information")
+			  .update(updateFields)
+		  .eq("user_id", userId);
 
     if (error) {
       console.error(error);
@@ -702,18 +707,8 @@ const supabase = createClient(supabaseUrl, supabaseKey);
     alert("Profile saved successfully!");
     setTimeout(()=> {
         window.location.href = "me.html";
-    }, 3000);
-    profilePreview.classList.remove("hidden");
-
-    if (imageUrl) {
-      previewPicture.src = imageUrl;
-      previewPicture.style.display = "block";
-    } else {
-      previewPicture.style.display = "none";
-    }
-
-    previewDescription.textContent =
-      longDescription || "No description provided.";
+    }, 3000);    
+    
   });
 
 async function loadUserProfile() {
