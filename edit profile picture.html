@@ -654,7 +654,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
     const fileName = `profile_${userId}`;
     const { data, error } = await supabase.storage
       .from("Profile") // Bucket name
-      .upload(fileName, file);
+      .upload(fileName, file, { upsert: true });
 
     if (error) {
       console.error("Upload error:", error);
