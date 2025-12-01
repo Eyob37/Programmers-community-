@@ -63,8 +63,10 @@
                 <label for="certificate">Past Course Completion Certificate (optional)</label>
                 <div class="file-upload-wrapper">
                    <input type="file" id="certificate" name="certificate" 
-       accept="application/pdf,image/*,.doc,.docx" style="display:none;">
-                    <label for="certificate" class="upload-box" tabindex="0">Click to upload certificate</label>
+                       accept="application/pdf,image/*,.doc,.docx"
+                       multiple 
+                       style="display:none;">
+                   <label for="certificate" class="upload-box" tabindex="0">Click to upload certificate</label>
                     <span id="file-upload-label">No file chosen</span>                  
                 </div>
                 
@@ -351,13 +353,10 @@
 			        fileInput.click();
 			    }
 			});
-			fileInput.addEventListener('change', function() {
-			    if (fileInput.files.length > 0) {
-			        fileLabel.textContent = fileInput.files[0].name;
-			    } else {
-			        fileLabel.textContent = 'No file chosen';
-			    }
-			});
+			fileInput.addEventListener("change", function () {
+        let names = Array.from(fileInput.files).map(f => f.name).join(", ");
+        fileLabel.textContent = names || "No file chosen";
+    });
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
@@ -380,7 +379,7 @@ document.querySelector(".register-form").addEventListener("submit", async functi
     const interests = Array.from(interestSelect.selectedOptions).map(opt => opt.value).join(",");
     localStorage.setItem("interests", JSON.stringify(Array.from(interestSelect.selectedOptions).map(opt => opt.value)));
 
-    const certificate = document.getElementById("certificate").files[0];
+    const certificates = document.getElementById("certificate").files;
     const message = document.getElementById("register-message");
 
     if (!name || !age || !grade || interests.length === 0) {
@@ -389,23 +388,28 @@ document.querySelector(".register-form").addEventListener("submit", async functi
         return;
     }
 
-    // Upload certificate to storage (optional)
-    let certificateUrl = null;
-    if (certificate) {
-        const { data, error } = await supabase.storage
-            .from("certificates")
-            .upload(`cert_${userId}_name_${certificate.name}`, certificate);
 
-        if (error) {
-            console.error("Upload error:", error.message);
-        } else {
-            const { data: publicUrl } = supabase.storage
-                .from("certificates")
-                .getPublicUrl(data.path);
-            certificateUrl = publicUrl.publicUrl;
-        }
-    }
-
+		let certificateUrls = [];		
+		if (certificates.length > 0) {
+		    for (const file of certificates) {
+		        const filePath = `${userId}/${Date.now()}_${file.name}`; // unique filename
+		
+		        const { data, error } = await supabase.storage
+		            .from("certificates")
+		            .upload(filePath, file);
+		
+		        if (!error) {
+		            const { data: publicUrl } = supabase.storage
+		                .from("certificates")
+		                .getPublicUrl(filePath);
+		
+		            certificateUrls.push(publicUrl.publicUrl);
+		        } else {
+		            console.error("Upload error:", error.message);
+		        }
+		    }
+		}
+    certificateUrls = JSON.stringify(certificateUrls);
     // Insert into Supabase (interests as array)
     const { data, error } = await supabase
         .from("Users basic information")
@@ -417,7 +421,7 @@ document.querySelector(".register-form").addEventListener("submit", async functi
                 Age: age,
                 Grade: grade,
                 FOI: interests, // array
-                certificate: certificateUrl
+                certificate: certificateUrls
             }
         ]);
 
