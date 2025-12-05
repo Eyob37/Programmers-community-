@@ -160,28 +160,28 @@ p {
 }
 
 /* Special styling based on item type */
-.fieldDiv[data-type="html"] {
+.fieldDiv[data-type="h"] {
     border-left: 5px solid #e74c3c;   /* red */
 }
 
-.fieldDiv[data-type="css"] {
+.fieldDiv[data-type="c"] {
     border-left: 5px solid #3498db;   /* blue */
 }
 
-.fieldDiv[data-type="js"] {
+.fieldDiv[data-type="j"] {
     border-left: 5px solid #f1c40f;   /* yellow */
 }
 
 /* Subtle color for text */
-.fieldDiv[data-type="html"] span.tag {
+.fieldDiv[data-type="h"] span.tag {
     color: #c0392b;
 }
 
-.fieldDiv[data-type="css"] span.tag {
+.fieldDiv[data-type="c"] span.tag {
     color: #2e86c1;
 }
 
-.fieldDiv[data-type="js"] span.tag {
+.fieldDiv[data-type="j"] span.tag {
     color: #b7950b;
 }
 p.subtitle {
@@ -233,16 +233,12 @@ let userId = localStorage.getItem("userId");
             interestsArr.forEach((interest, i) => {
                 let div = document.createElement("div");
                 div.classList.add("fieldDiv");
-                // Detect type (simple keywords)
-let type = "other";
-if (interest.toLowerCase().includes("html")) type = "html";
-if (interest.toLowerCase().includes("css")) type = "css";
-if (interest.toLowerCase().includes("js") || interest.toLowerCase().includes("javascript")) type = "js";
+                let DT = Math.floor(Math.random()*3);
+                let types = ["h","c", "j"]
+                let type = types[DT];                                
+                div.setAttribute("data-type", type);
 
-div.setAttribute("data-type", type);
-
-// Add colored title
-div.innerHTML = `<span class="tag">${interest}</span>`;
+                div.innerHTML = `<span class="tag">${interest}</span>`;
                 MC.appendChild(div);                
 
                 // Show More button
