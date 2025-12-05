@@ -4,69 +4,202 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Questions manager</title>
     <style>
-        body {
-            background: linear-gradient(to right bottom, #20203f, #3f1527);
-            background-attachment: fixed;
-            color: white;
-            text-align: center;
-            font-family: sans-serif;
-        }
-        .main-container div {
-            width: 90%;
-            min-height: 30px;
-            border-radius: 10px;
-            border: 2px solid blue;
-            margin: 10px auto;
-            display: flex;       
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            position: relative;
-            padding: 10px;
-            background: cyan;
-            color: red;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .fieldDiv div {
-            width: 95%;
-            margin: 5px auto;      
-            background: #f2f2f2eb;
-            border-radius: 2px;
-            color: black;
-            font-size: 0.7rem;
-            text-align: left;
-        }
-        .showMore {
-            position: absolute;
-            right: 5px;   
-            top: 10px;    
-            background: transparent;
-            border: none;
-            font-size: 20px;
-            z-index: 2;
-            cursor: pointer;
-        }
-        .nothing {
-            display: none;
-        }
-        #goNext{
-            position: fixed;
-            bottom: 2px;
-            right: 2px;
-            width: 130px;
-            height: 25px;
-            border-radius: 8px;
-            background: #63a2a998;
-            color: #ff001f;
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
+        /* Clean Modern Theme */
+/* Simple, Clean UI */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-image: url("images/background.jpeg");
+    background-size: 100vw 160vh;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: white;
+    text-align: center;
+    padding: 25px 15px 90px;
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+p {
+    font-size: 1.05rem;
+    max-width: 650px;
+    margin: 0 auto 25px;
+    color: #555;
+}
+
+/* Container */
+.main-container {
+    max-width: 750px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Cards */
+.fieldDiv {
+    background: white;
+    padding: 18px 50px 18px 18px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    text-align: left;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.15s;
+    margin: 5px;    
+}
+
+.fieldDiv:hover {
+    background: #eaeaea;
+}
+
+/* Completed state */
+.fieldDiv[style*="background: #71ff6a"] {
+    background: #dfffe0 !important;
+    border-color: #7cd67f;
+    color: #239c2c;
+    cursor: default;
+}
+
+/* Show more button */
+.showMore {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: #eee;
+    padding: 4px 9px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.showMore:hover {
+    background: #ddd;
+}
+
+/* Score details */
+.main-container > .fieldDiv > div[class^="item-"] {
+    margin-top: 10px;
+    padding: 12px;
+    background: #fafafa;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+.main-container > .fieldDiv > div[class^="item-"] h4 {
+    margin-bottom: 10px;
+    color: #444;
+}
+
+.main-container > .fieldDiv > div[class^="item-"] ol {
+    padding-left: 18px;
+    color: #444;
+}
+
+/* Empty state */
+.nothing {
+    display: none;
+    max-width: 450px;
+    margin: 40px auto;
+    padding: 25px;
+    border: 1px dashed #aaa;
+    border-radius: 8px;
+    background: white;
+    color: #666;
+    font-size: 1.1rem;
+}
+
+/* Next button */
+#goNext {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 130px;
+    height: 48px;
+    border: none;
+    border-radius: 8px;
+    background: #00b894;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#goNext:disabled {
+    background: #9e9e9e;
+    cursor: default;
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+    h2 {
+        font-size: 1.6rem;
+    }
+    .fieldDiv {
+        padding: 16px 45px 16px 14px;
+        font-size: 1rem;
+    }
+    #goNext {
+        width: 120px;
+        height: 45px;
+        font-size: 1rem;
+    }
+}
+
+/* Special styling based on item type */
+.fieldDiv[data-type="html"] {
+    border-left: 5px solid #e74c3c;   /* red */
+}
+
+.fieldDiv[data-type="css"] {
+    border-left: 5px solid #3498db;   /* blue */
+}
+
+.fieldDiv[data-type="js"] {
+    border-left: 5px solid #f1c40f;   /* yellow */
+}
+
+/* Subtle color for text */
+.fieldDiv[data-type="html"] span.tag {
+    color: #c0392b;
+}
+
+.fieldDiv[data-type="css"] span.tag {
+    color: #2e86c1;
+}
+
+.fieldDiv[data-type="js"] span.tag {
+    color: #b7950b;
+}
+p.subtitle {
+    font-size: 1.12rem;
+    max-width: 720px;
+    margin: 0 auto 30px;
+    color: white;    
+    padding: 12px 18px;
+    background: #ffffff;
+    border-radius: 8px;
+    background: transparent;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
     </style>  
 </head>
 <body>
     <h2>Welcome to this page</h2>
-    <p>Now, now you have to answer the Questions that you will see.</p>
+   <p class="subtitle">Choose a topic you want to explore. Each one has questions waiting for you.</p>
     <div class="main-container"></div>
     <div class="nothing">There is nothing in here</div>
     <button id="goNext">Next</button>
@@ -100,7 +233,16 @@ let userId = localStorage.getItem("userId");
             interestsArr.forEach((interest, i) => {
                 let div = document.createElement("div");
                 div.classList.add("fieldDiv");
-                div.textContent = interest;
+                // Detect type (simple keywords)
+let type = "other";
+if (interest.toLowerCase().includes("html")) type = "html";
+if (interest.toLowerCase().includes("css")) type = "css";
+if (interest.toLowerCase().includes("js") || interest.toLowerCase().includes("javascript")) type = "js";
+
+div.setAttribute("data-type", type);
+
+// Add colored title
+div.innerHTML = `<span class="tag">${interest}</span>`;
                 MC.appendChild(div);                
 
                 // Show More button
@@ -177,7 +319,7 @@ let userId = localStorage.getItem("userId");
 				  
 				  localStorage.setItem("allDone", true);
 				  
-				  window.location.href = "create profile picture.html";         
+				  window.location.href = "index.html";        
         }
 
         function checkAllDone() {
