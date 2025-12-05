@@ -6,6 +6,70 @@
     <title>Settings | Account Management</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+.back {
+    position: fixed;
+    left: 5px;
+    top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: white;
+    text-decoration: none;
+    font-size: 28px;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.back::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: all 0.5s ease;
+}
+
+.back:hover::before {
+    left: 100%;
+}
+
+.back:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.back:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.back::after {
+    content: 'Back';
+    position: absolute;
+    left: 60px;
+    white-space: nowrap;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.back:hover::after {
+    opacity: 1;
+}        
         /* CSS Variables for consistent design */
         :root {
             --primary-color: #2563eb;
@@ -361,6 +425,7 @@
     </style>
 </head>
 <body>
+    <a href="me.html" class = "back">👈</a>     
     <div class="container">
         <header class="header">
             <h1>Settings</h1>
@@ -612,20 +677,19 @@
 			        return;
 			    }
 			    
-			    // If all requirements are met
-			    passwordMatch.style.display = 'block';
-			    passwordMatch.innerHTML = '<i class="fas fa-check-circle"></i> Password is strong!';
-			    passwordMatch.style.color = 'var(--success-color)';
-			    
-			    // Success feedback
-			    submitBtn.innerHTML = '<i class="fas fa-check"></i> Password Updated!';
-			    submitBtn.style.backgroundColor = 'var(--success-color)';
 			    
          onAuthStateChanged(auth, (user) => {
            if (user) {
              let res = changePassword(newPassword);
             if (res != "yes") return;
-             
+
+			      passwordMatch.style.display = 'block';
+		   	    passwordMatch.innerHTML = '<i class="fas fa-check-circle"></i> Password is strong!';
+		   	    passwordMatch.style.color = 'var(--success-color)';
+			    
+			    // Success feedback
+		       submitBtn.innerHTML = '<i class="fas fa-check"></i> Password Updated!';
+			     submitBtn.style.backgroundColor = 'var(--success-color)';
            setTimeout(() => {            			    
 			        this.reset();
 			        submitBtn.innerHTML = originalText;
