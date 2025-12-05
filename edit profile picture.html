@@ -471,6 +471,7 @@
         };
 
         // DOM Elements
+        let IsProfileChange = false;
         const profilePicture = document.getElementById('profile-picture');
         const editPictureBtn = document.getElementById('edit-picture-btn');
         const fileInput = document.getElementById('file-input');
@@ -520,6 +521,7 @@
                     console.log('Profile picture updated');
                 };
                 reader.readAsDataURL(file);
+                IsProfileChange = true;
             }
         });
 
