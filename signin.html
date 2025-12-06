@@ -136,7 +136,6 @@ async function getEmail(userId) {
 
   // If you stored Score as JSON string, parse it:
   const Email = data.Email ? data.Email : null;  
-alert(`${Email} 1`);
   return Email;
 }
 
@@ -172,7 +171,6 @@ const auth = getAuth(app);
 	 localStorage.setItem("userId", user.uid);
 	 let email = await getEmail(user.uid);
 	 localStorage.setItem("Email", email);
-	 alert(`${email} 2`);
 	 localStorage.setItem('allDone', true);
 	 
 	 message.style.color = '#27ae60';
