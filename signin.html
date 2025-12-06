@@ -123,10 +123,10 @@ const supabaseUrl = "https://jurgrpqwyilfdpzbzfrd.supabase.co";
 const supabaseKey = "your-anon-key";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-async function getScore(userId) {
+async function getEmail(userId) {
   const { data, error } = await supabase
     .from("Users basic information")
-    .select("Score")
+    .select("Email")
     .eq("user_id", userId)   // filter by the same userId
     .single();               // expect only one row back
 
@@ -136,9 +136,9 @@ async function getScore(userId) {
   }
 
   // If you stored Score as JSON string, parse it:
-  const score = data.Score ? JSON.parse(data.Score) : null;
+  const Email = data.Email ? JSON.parse(data.Email) : null;
 
-  return score;
+  return Email;
 }
 
           
@@ -171,6 +171,8 @@ const auth = getAuth(app);
 	 .then(userCredential => {
       const user = userCredential.user;
 	 localStorage.setItem("userId", user.uid);
+	 let email = getEmail(user.uid);
+	 localStorage.setItem("Email", email);
 	 localStorage.setItem('allDone', true);
 	 
 	 message.style.color = '#27ae60';
