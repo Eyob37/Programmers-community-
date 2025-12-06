@@ -120,18 +120,7 @@
             </a>
         </nav>
     </div>
-    <script>
-    // Simple functionality to demonstrate the filter select
-    document.getElementById('filter-select').addEventListener('change', function() {
-        const placeholderTexts = {
-            'user-id': 'Search by user ID...',
-            'name': 'Search by name...',
-            'field': 'Search by field...'
-        };
-        
-        document.getElementById('search-input').placeholder = placeholderTexts[this.value];
-    });
-</script>
+    
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
@@ -148,7 +137,7 @@ const { data: users, error } = await supabase
   .from("Users basic information")
   .select("user_id, Name, Profile_Description, profile_image, Short_Description")
   .neq("user_id", userId)
-  .limit(5);
+  .limit(15);
 
 if (error) {
   console.error("Error fetching users:", error);
@@ -180,6 +169,6 @@ if (error) {
   }
 }
 </script>
-    <script src="home.js"></script>
+    <script type="module" src="home.js"></script>
 </body>
 </html>
