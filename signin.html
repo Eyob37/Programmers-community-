@@ -131,12 +131,12 @@ async function getEmail(userId) {
     .single();               // expect only one row back
 
   if (error) {
-    console.error("Error fetching score:", error);
+    console.error("Error fetching score:", JSON.stringify(error));
     return null;
   }
 
   // If you stored Score as JSON string, parse it:
-  const Email = data.Email ? JSON.parse(data.Email) : null;
+  const Email = data.Email ? data.Email : null;
 
   return Email;
 }
