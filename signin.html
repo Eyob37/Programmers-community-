@@ -135,8 +135,8 @@ async function getEmail(userId) {
   }
 
   // If you stored Score as JSON string, parse it:
-  const Email = data.Email ? data.Email : null;
-
+  const Email = data.Email ? data.Email : null;  
+alert(`${Email} 1`);
   return Email;
 }
 
@@ -167,11 +167,12 @@ const auth = getAuth(app);
             const message = document.getElementById('signin-message');
          
   	signInWithEmailAndPassword(auth, userEmail, password)
-	 .then(userCredential => {
+	 .then(async userCredential => {
       const user = userCredential.user;
 	 localStorage.setItem("userId", user.uid);
-	 let email = getEmail(user.uid);
+	 let email = await getEmail(user.uid);
 	 localStorage.setItem("Email", email);
+	 alert(`${email} 2`);
 	 localStorage.setItem('allDone', true);
 	 
 	 message.style.color = '#27ae60';
