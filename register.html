@@ -424,7 +424,7 @@ document.querySelector(".register-form").addEventListener("submit", async functi
                 certificate: certificateUrls
             }
         ]);
-
+      	 localStorage.setItem("Email", email);	 
     if (error) {
         message.style.color = "#e74c3c";
         message.textContent = "Error: " + error.message;
