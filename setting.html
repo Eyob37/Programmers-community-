@@ -227,10 +227,11 @@
             overflow: hidden;
             transition: max-height var(--transition-normal), padding var(--transition-normal);
             background-color: rgba(0, 0, 0, 0.01);
+            margin: 5px;
         }
 
         .account-header.active + .account-details {
-            max-height: 500px;
+            max-height: 1500px;
             padding: 0 2rem 2rem;
         }
 
@@ -456,6 +457,26 @@
                         <h3 class="form-title">Change Password</h3>
                         
                         <div class="form-group">
+                            <label for="confirm-password">Email</label>
+                            <div class="input-with-icon">
+                                <input type="email" id="email" name="email" required placeholder="Enter your email" autocomplete="new-password">
+                                <div class="input-icon">
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="old-password">Old password</label>
+                            <div class="input-with-icon">
+                                <input type="password" id="old-password" name="old-password" required placeholder="Enter your old password" autocomplete="new-password">
+                                <div class="input-icon">
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                            </div>                            
+                        </div>
+                        
+                        <div class="form-group">
                             <label for="new-password">New Password</label>
                             <div class="input-with-icon">
                                 <input type="password" id="new-password" name="new-password" required placeholder="Enter your new password" autocomplete="new-password">
@@ -514,6 +535,7 @@
 
   import {
     getAuth,
+    signInWithEmailAndPassword,
     updatePassword,
     onAuthStateChanged
   } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
@@ -534,6 +556,17 @@
   const auth = getAuth(app);
 
   // 🚀 Function to change password
+  async function reLogin(email, oldPassword) {
+      try {
+        await signInWithEmailAndPassword(auth, email, oldPassword);
+        console.log("Re-login successful");
+        return true;
+      } catch (error) {
+        console.error("Re-login error:", error.message);
+        return false;
+      }
+    }
+    
   async function changePassword(newPass) {
     const user = auth.currentUser;
 
@@ -553,7 +586,7 @@
         alert("Please log in again to change your password.");
       }
     }
-  }
+  }    
 
         // Toggle account details visibility when account header is clicked
         document.getElementById('account-header').addEventListener('click', function() {
@@ -631,6 +664,8 @@
 			document.getElementById('password-form').addEventListener('submit', function(e) {
 			    e.preventDefault();
 			    
+			    const email = document.getElementById('email').value;
+			    const oldPassword = document.getElementById('old-password').value;
 			    const newPassword = document.getElementById('new-password').value;
 			    const confirmPassword = document.getElementById('confirm-password').value;
 			    const submitBtn = this.querySelector('.btn-primary');
@@ -678,34 +713,48 @@
 			    }
 			    
 			    
-         onAuthStateChanged(auth, (user) => {
-           if (user) {
-             let res = changePassword(newPassword);
-            if (res != "yes") return;
-
-			      passwordMatch.style.display = 'block';
-		   	    passwordMatch.innerHTML = '<i class="fas fa-check-circle"></i> Password is strong!';
-		   	    passwordMatch.style.color = 'var(--success-color)';
-			    
-			    // Success feedback
-		       submitBtn.innerHTML = '<i class="fas fa-check"></i> Password Updated!';
-			     submitBtn.style.backgroundColor = 'var(--success-color)';
-           setTimeout(() => {            			    
-			        this.reset();
-			        submitBtn.innerHTML = originalText;
-			        submitBtn.style.backgroundColor = '';
-			        passwordMatch.style.display = 'none';
-			        
-			        // Reset requirement indicators
-			        document.querySelectorAll('.password-requirements li').forEach(li => {
-			            li.classList.remove('valid');
-			            li.classList.add('invalid');
-			        });
-			    }, 3000);
-			    }
-        });			    
+				    onAuthStateChanged(auth, async (user) => {
+				        if (user) {      
+				            try {
+				                // You need to import signInWithEmailAndPassword for reLogin to work
+				                const okg = await reLogin(email, oldPassword);
+				                if (okg) {
+				                    let res = await changePassword(newPassword);
+				                    
+				                    if (res === "yes") {
+				                        passwordMatch.style.display = 'block';
+				                        passwordMatch.innerHTML = '<i class="fas fa-check-circle"></i> Password updated successfully!';
+				                        passwordMatch.style.color = 'var(--success-color)';
+				                        
+				                        submitBtn.innerHTML = '<i class="fas fa-check"></i> Password Updated!';
+				                        submitBtn.style.backgroundColor = 'var(--success-color)';
+				                        
+				                        setTimeout(() => {            			    
+				                            this.reset();
+				                            submitBtn.innerHTML = originalText;
+				                            submitBtn.style.backgroundColor = '';
+				                            passwordMatch.style.display = 'none';
+				                            
+				                            document.querySelectorAll('.password-requirements li').forEach(li => {
+				                                li.classList.remove('valid');
+				                                li.classList.add('invalid');
+				                            });
+				                        }, 3000);
+				                    }
+				                }
+				            } catch (error) {
+				                console.error("Error:", error);
+				                passwordMatch.style.display = 'block';
+				                passwordMatch.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${error.message}`;
+				                passwordMatch.style.color = 'var(--error-color)';
+				            }
+				        } else {
+				            passwordMatch.style.display = 'block';
+				            passwordMatch.innerHTML = '<i class="fas fa-exclamation-circle"></i> No user logged in';
+				            passwordMatch.style.color = 'var(--error-color)';
+				        }
+				    });
 			});
-			
         // Form reset
         document.getElementById('password-form').addEventListener('reset', function() {
             // Reset validation indicators
