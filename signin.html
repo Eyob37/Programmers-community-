@@ -116,11 +116,10 @@
     
       <script type = "module">
           
-                    
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
 const supabaseUrl = "https://jurgrpqwyilfdpzbzfrd.supabase.co";
-const supabaseKey = "your-anon-key";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1cmdycHF3eWlsZmRwemJ6ZnJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5NDM3NTYsImV4cCI6MjA3MTUxOTc1Nn0.1E-1XaNMTuHGUpgVknyWxiiYXArdDCR9yXa8QzOms5E";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function getEmail(userId) {
