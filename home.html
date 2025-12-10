@@ -154,7 +154,7 @@ if (error) {
       userCard.setAttribute("data-user", user.user_id);
 
       userCard.innerHTML = `
-        <div class="user-avatar">
+        <div class="user-avatar" data-thisId="${user.user_id}">
           <img src="${user.profile_image || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSWZXex_C1BPKsEDyfKMKPuipvCM58nStVAI1LS1LXMw&s=10"}" alt="User">
         </div>
         <div class="user-info">
@@ -164,7 +164,12 @@ if (error) {
         </div>
       `;
 
-      usersContainer.appendChild(userCard);
+      usersContainer.appendChild(userCard);     
+      userCard.addEventListener("click", (e) => {
+	        const id = e.currentTarget.dataset.thisId;	    
+	        sessionStorage.setItem("thisId", id);
+	        window.location.href = `user detail.html`;
+	    }); 
     });
   }
 }
