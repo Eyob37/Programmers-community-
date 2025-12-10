@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --light-gray: #e9ecef;
+            --medium-gray: #adb5bd;
+            --dark-gray: #495057;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --shadow-hover: rgba(0, 0, 0, 0.12);
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            background-color: #f5f7ff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .logo i {
+            color: var(--accent);
+        }
+
+        /* Main Layout */
+        .profile-main {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 992px) {
+            .profile-main {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Profile Section */
+        .profile-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: 0 10px 30px var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            top: 10px;
+        }
+
+        .profile-card:hover {
+            box-shadow: 0 15px 40px var(--shadow-hover);
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--light-gray);
+            margin: 0 auto 20px;
+            transition: var(--transition);
+        }
+
+        .profile-image:hover {
+            transform: scale(1.03);
+            border-color: var(--primary-light);
+        }
+
+        .profile-name {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .profile-id {
+            color: var(--medium-gray);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .profile-short-desc {
+            color: var(--dark-gray);
+            font-size: 1rem;
+            margin-bottom: 25px;
+            padding: 0 10px;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--medium-gray);
+        }
+
+        /* Content Area */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .section-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: 0 10px 30px var(--shadow);
+            transition: var(--transition);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .section-card:hover {
+            box-shadow: 0 15px 40px var(--shadow-hover);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-gray);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--primary);
+        }
+
+        /* Long Description */
+        .long-description p {
+            margin-bottom: 15px;
+            color: var(--dark-gray);
+        }
+
+        /* Certificates Section */
+        .certificates-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .certificate-card {
+            border: 1px solid var(--light-gray);
+            border-radius: 10px;
+            padding: 20px;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .certificate-card:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-5px);
+        }
+
+        .certificate-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .certificate-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-light);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+        }
+
+        .certificate-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .certificate-issuer {
+            color: var(--medium-gray);
+            font-size: 0.9rem;
+            margin-top: 3px;
+        }
+
+        .certificate-details {
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .certificate-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--light-gray);
+        }
+
+        /* Skills Section */
+        .skills-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .skill-item {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: var(--light);
+            transition: var(--transition);
+        }
+
+        .skill-item:hover {
+            background-color: var(--light-gray);
+        }
+
+        .skill-name {
+            min-width: 150px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 5px;
+        }
+
+        .star {
+            color: var(--medium-gray);
+            font-size: 1.3rem;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .star.active {
+            color: #ffc107;
+        }
+
+        .skill-level {
+            margin-left: auto;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.9rem;
+            background-color: rgba(67, 97, 238, 0.1);
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--medium-gray);
+            font-size: 0.9rem;
+            margin-top: 30px;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .profile-main {
+                gap: 20px;
+            }
+            
+            .profile-card, .section-card {
+                padding: 20px;
+            }
+            
+            .certificates-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .skill-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .skill-level {
+                margin-left: 0;
+            }
+            
+            .profile-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .stat-item {
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .profile-name {
+                font-size: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .certificate-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Animation for certificate download */
+        @keyframes downloadPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .downloading {
+            animation: downloadPulse 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <i class="fas fa-user-circle"></i>
+                <span>ProfileDash</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="profile-main">
+            <!-- Profile Section -->
+            <section class="profile-card">
+                <div class="profile-header">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Profile Picture" class="profile-image">
+                    <h1 class="profile-name">Alex Morgan</h1>
+                    <p class="profile-id">ID: UX23489</p>
+                    <p class="profile-short-desc">Senior Full Stack Developer & Cybersecurity Specialist with 8+ years of experience</p>
+                </div>
+            </section>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Long Description Section -->
+                <section class="section-card long-description">
+                    <h2 class="section-title"><i class="fas fa-user"></i> About Me</h2>
+                    <p class="I-long-description">I am a passionate software engineer specializing in creating secure, scalable web applications. With a background in both frontend and backend development, I have worked with a wide range of technologies from React and Vue.js to Node.js and Python Django.</p>                    
+                </section>
+
+                <!-- Certificates Section -->
+                <section class="section-card">
+                    <h2 class="section-title"><i class="fas fa-certificate"></i> Certificates</h2>
+                    <div class="certificates-container">
+                        <!-- Certificate 1 -->
+                        <div class="certificate-card">
+                            <div class="certificate-header">
+                                <div class="certificate-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div>
+                                    <h3 class="certificate-title">Cybersecurity Expert</h3>
+                                    <p class="certificate-issuer">ISC2 • 2023</p>
+                                </div>
+                            </div>
+                            <p class="certificate-details">Advanced certification covering network security, cryptography, and risk management.</p>
+                            <div class="certificate-actions">
+                                <button class="btn btn-primary view-certificate" data-cert="cybersecurity">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                                <button class="btn btn-outline download-certificate" data-cert="cybersecurity">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Certificate 2 -->
+                        <div class="certificate-card">
+                            <div class="certificate-header">
+                                <div class="certificate-icon">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <div>
+                                    <h3 class="certificate-title">Full Stack Development</h3>
+                                    <p class="certificate-issuer">Meta • 2022</p>
+                                </div>
+                            </div>
+                            <p class="certificate-details">Comprehensive full-stack certification covering React, Node.js, databases, and DevOps.</p>
+                            <div class="certificate-actions">
+                                <button class="btn btn-primary view-certificate" data-cert="fullstack">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                                <button class="btn btn-outline download-certificate" data-cert="fullstack">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Certificate 3 -->
+                        <div class="certificate-card">
+                            <div class="certificate-header">
+                                <div class="certificate-icon">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div>
+                                    <h3 class="certificate-title">Robotics Process Automation</h3>
+                                    <p class="certificate-issuer">UiPath • 2021</p>
+                                </div>
+                            </div>
+                            <p class="certificate-details">RPA developer certification focusing on automating business processes with robotics.</p>
+                            <div class="certificate-actions">
+                                <button class="btn btn-primary view-certificate" data-cert="robotics">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                                <button class="btn btn-outline download-certificate" data-cert="robotics">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Skills Section -->
+                <section class="section-card">
+                    <h2 class="section-title"><i class="fas fa-star"></i> Skills & Ratings</h2>
+                    <div class="skills-container">
+                        <!-- Skill 1 -->
+                        <div class="skill-item">
+                            <div class="skill-name">Cybersecurity</div>
+                            <div class="star-rating" data-skill="cybersecurity">
+                                <span class="star active"><i class="fas fa-star"></i></span>
+                                <span class="star active"><i class="fas fa-star"></i></span>
+                                <span class="star active"><i class="fas fa-star"></i></span>
+                                <span class="star active"><i class="fas fa-star"></i></span>
+                                <span class="star active"><i class="fas fa-star"></i></span>
+                            </div>
+                            <div class="skill-level">Expert</div>
+                        </div>
+
+                        <!-- Skill 2 -->
+                        <div class="skill-item">
+                            <div class="skill-name">Web Development</div>
+                            <div class="star-rating" data-skill="webdev">
+                                <span class="star active"><i class="fas fa-star"></i></span>
+                                <span class="star active"><i class="fas fa-star"></i></span>
+                                <span class="star active"><i class="fas fa-star"></i></span>
+                                <span class="star active"><i class="fas fa-star"></i></span>
+                                <span class="star"><i class="fas fa-star"></i></span>
+                            </div>
+                            <div class="skill-level">Advanced</div>
+                        </div>
+
+                        <!-- Skill 3 -->
+                        <div class="skill-item">
+                            <div class="skill-name">Robotics</div>
+                            <div class="star-rating" data-skill="robotics">
+                                <span class="star active"><i class="fas fa-star"></i></span>
+                                <span class="star active"><i class="fas fa-star"></i></span>
+                                <span class="star active"><i class="fas fa-star"></i></span>
+                                <span class="star"><i class="fas fa-star"></i></span>
+                                <span class="star"><i class="fas fa-star"></i></span>
+                            </div>
+                            <div class="skill-level">Intermediate</div>
+                        </div>
+
+                        <!-- Skill 4 -->
+                        <div class="skill-item">
+                            <div class="skill-name">UI/UX Design</div>
+                            <div class="star-rating" data-skill="design">
+                                <span class="star active"><i class="fas fa-star"></i></span>
+                                <span class="star active"><i class="fas fa-star"></i></span>
+                                <span class="star active"><i class="fas fa-star"></i></span>
+                                <span class="star active"><i class="fas fa-star"></i></span>
+                                <span class="star active"><i class="fas fa-star"></i></span>
+                            </div>
+                            <div class="skill-level">Expert</div>
+                        </div>
+
+                        <!-- Skill 5 -->
+                        <div class="skill-item">
+                            <div class="skill-name">Cloud Computing</div>
+                            <div class="star-rating" data-skill="cloud">
+                                <span class="star active"><i class="fas fa-star"></i></span>
+                                <span class="star active"><i class="fas fa-star"></i></span>
+                                <span class="star active"><i class="fas fa-star"></i></span>
+                                <span class="star active"><i class="fas fa-star"></i></span>
+                                <span class="star"><i class="fas fa-star"></i></span>
+                            </div>
+                            <div class="skill-level">Advanced</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>© 2025 ProfileDash. All rights reserved. | Last updated: December 2025</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+      	let userId = sessionStorage.getItem("thisId");														  
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize star ratings
+            const starRatings = document.querySelectorAll('.star-rating');
+            
+            starRatings.forEach(rating => {
+                const stars = rating.querySelectorAll('.star');
+                
+                // Add click functionality to stars
+                stars.forEach((star, index) => {
+                    star.addEventListener('click', () => {
+                        // Reset all stars in this rating
+                        stars.forEach(s => s.classList.remove('active'));
+                        
+                        // Activate stars up to clicked one
+                        for (let i = 0; i <= index; i++) {
+                            stars[i].classList.add('active');
+                        }
+                        
+                        // Update skill level text
+                        updateSkillLevel(rating, index + 1);
+                    });
+                });
+            });
+            
+            // Function to update skill level based on star count
+            function updateSkillLevel(ratingElement, starCount) {
+                const skillItem = ratingElement.closest('.skill-item');
+                const skillLevel = skillItem.querySelector('.skill-level');
+                
+                let levelText;
+                if (starCount === 5) {
+                    levelText = 'Expert';
+                } else if (starCount === 4) {
+                    levelText = 'Advanced';
+                } else if (starCount === 3) {
+                    levelText = 'Intermediate';
+                } else if (starCount === 2) {
+                    levelText = 'Beginner';
+                } else {
+                    levelText = 'Novice';
+                }
+                
+                skillLevel.textContent = levelText;
+            }
+            
+            // Certificate download functionality
+            const downloadButtons = document.querySelectorAll('.download-certificate');
+            
+            downloadButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const certName = this.getAttribute('data-cert');
+                    
+                    // Add animation to button
+                    this.classList.add('downloading');
+                    
+                    // Change button text temporarily
+                    const originalHTML = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
+                    
+                    // Simulate download process
+                    setTimeout(() => {
+                        alert(`Certificate "${certName}" downloaded successfully!`);
+                        this.innerHTML = originalHTML;
+                        this.classList.remove('downloading');
+                    }, 1500);
+                });
+            });
+            
+            // Certificate view functionality
+            const viewButtons = document.querySelectorAll('.view-certificate');
+            
+            viewButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const certName = this.getAttribute('data-cert');
+                    const certTitle = this.closest('.certificate-card').querySelector('.certificate-title').textContent;
+                    
+                    // Create modal view for certificate
+                    const modal = document.createElement('div');
+                    modal.style.cssText = `
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-color: rgba(0, 0, 0, 0.8);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        z-index: 1000;
+                        animation: fadeIn 0.3s ease-out;
+                    `;
+                    
+                    const modalContent = document.createElement('div');
+                    modalContent.style.cssText = `
+                        background-color: white;
+                        border-radius: var(--border-radius);
+                        padding: 30px;
+                        max-width: 500px;
+                        width: 90%;
+                        max-height: 80vh;
+                        overflow-y: auto;
+                        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+                        position: relative;
+                    `;
+                    
+                    modalContent.innerHTML = `
+                        <button class="close-modal" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; color: var(--dark-gray); cursor: pointer;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <h2 style="margin-bottom: 20px; color: var(--primary);">${certTitle}</h2>
+                        <div style="text-align: center; margin-bottom: 25px;">
+                            <div style="width: 100px; height: 100px; background-color: var(--primary-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: white; font-size: 2.5rem;">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <p style="color: var(--dark-gray);">This is a preview of the certificate. The full certificate includes detailed information about the skills and competencies achieved.</p>
+                        </div>
+                        <div style="background-color: var(--light); padding: 20px; border-radius: 10px;">
+                            <h3 style="margin-bottom: 10px; color: var(--dark);">Certificate Details</h3>
+                            <p style="color: var(--dark-gray); margin-bottom: 5px;"><strong>Issuer:</strong> Professional Certification Board</p>
+                            <p style="color: var(--dark-gray); margin-bottom: 5px;"><strong>Issue Date:</strong> ${getRandomDate()}</p>
+                            <p style="color: var(--dark-gray); margin-bottom: 5px;"><strong>Expiry Date:</strong> ${getExpiryDate()}</p>
+                            <p style="color: var(--dark-gray);"><strong>Certificate ID:</strong> CERT-${Math.random().toString(36).substring(2, 10).toUpperCase()}</p>
+                        </div>
+                    `;
+                    
+                    modal.appendChild(modalContent);
+                    document.body.appendChild(modal);
+                    
+                    // Close modal functionality
+                    const closeBtn = modalContent.querySelector('.close-modal');
+                    closeBtn.addEventListener('click', () => {
+                        document.body.removeChild(modal);
+                    });
+                    
+                    // Close modal when clicking outside content
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            document.body.removeChild(modal);
+                        }
+                    });
+                });
+            });
+            
+            // Helper function to generate random date
+            function getRandomDate() {
+                const start = new Date(2020, 0, 1);
+                const end = new Date(2023, 9, 1);
+                const date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+                return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            }
+            
+            // Helper function to generate expiry date
+            function getExpiryDate() {
+                const date = new Date();
+                date.setFullYear(date.getFullYear() + 2);
+                return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            }
+            
+            // Profile image hover effect
+            const profileImage = document.querySelector('.profile-image');
+            profileImage.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05) rotate(5deg)';
+            });
+            
+            profileImage.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1) rotate(0deg)';
+            });
+                       
+        });
+    </script>
+    <script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabaseUrl = "https://jurgrpqwyilfdpzbzfrd.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1cmdycHF3eWlsZmRwemJ6ZnJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5NDM3NTYsImV4cCI6MjA3MTUxOTc1Nn0.1E-1XaNMTuHGUpgVknyWxiiYXArdDCR9yXa8QzOms5E";
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+async function loadUser() {
+    const { data, error } = await supabase
+        .from("Users basic information")
+        .select("user_id, Name, certificate, Short_Description, Profile_Description, profile_image, Score")
+        .eq("user_id", userId)   // <-- FILTER BY USER ID
+        .single();               // get exactly one row
+
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    // Inject into HTML
+    document.querySelector(".profile-name").textContent = data.Name;
+    document.querySelector(".profile-id").textContent = `ID: ${data.user_id}`;
+    document.querySelector(".profile-short-desc").textContent = data.Short_Description;
+    document.querySelector(".I-long-description").textContent = data.Profile_Description;    
+    document.querySelector(".profile-image").src = data.profile_image;
+    
+    // -------- CERTIFICATES --------
+if (data.certificate) {
+    const certContainer = document.querySelector(".certificates-container");
+    certContainer.innerHTML = ""; // remove default certificates
+
+    let certificateUrls = [];
+    try {
+        certificateUrls = JSON.parse(data.certificate); // string → array
+    } catch {
+        console.warn("Invalid certificate JSON");
+    }
+
+    certificateUrls.forEach((url, index) => {
+        const card = document.createElement("div");
+        card.classList.add("certificate-card");
+
+        card.innerHTML = `
+            <div class="certificate-header">
+                <div class="certificate-icon">
+                    <i class="fas fa-image"></i>
+                </div>
+                <div>
+                    <h3 class="certificate-title">Certificate ${index + 1}</h3>
+                    <p class="certificate-issuer">Uploaded Certificate</p>
+                </div>
+            </div>
+
+            <img src="${url}" alt="Certificate ${index + 1}"
+                style="width:100%; border-radius:8px; margin-bottom:15px;">
+
+            <div class="certificate-actions">
+                <button class="btn btn-primary view-certificate" data-url="${url}">
+                    <i class="fas fa-eye"></i> View
+                </button>
+                <a href="${url}" download class="btn btn-outline">
+                    <i class="fas fa-download"></i> Download
+                </a>
+            </div>
+        `;
+
+        certContainer.appendChild(card);
+    });
+
+    // VIEW FULL IMAGE POPUP
+    document.querySelectorAll(".view-certificate").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const imgUrl = btn.getAttribute("data-url");
+
+            const modal = document.createElement("div");
+            modal.style.cssText = `
+                position:fixed;top:0;left:0;width:100%;height:100%;
+                background:rgba(0,0,0,0.8);
+                display:flex;justify-content:center;align-items:center;
+                z-index:2000;
+            `;
+
+            modal.innerHTML = `
+                <img src="${imgUrl}" style="max-width:90%;max-height:90%;border-radius:10px;">
+            `;
+
+            modal.addEventListener("click", () => modal.remove());
+            document.body.appendChild(modal);
+        });
+    });
+}
+    
+// -------- DYNAMIC SKILLS FROM Score --------
+if (data.Score) {
+    let scores = [];
+
+    try {
+        scores = JSON.parse(data.Score);
+    } catch {
+        console.warn("Score JSON invalid");
+        return;
+    }
+
+    // SELECT SECTION AND CLEAR OLD CONTENT
+    const skillSection = document.querySelector(
+        '.section-card .skills-container'
+    ) || document.querySelector('.section-card');
+
+    // If a skills-container exists inside the section
+    let container;
+
+    if (document.querySelector('.skills-container')) {
+        container = document.querySelector('.skills-container');
+        container.innerHTML = ""; // remove default items
+    } else {
+        // If you don't have a .skills-container wrapper
+        container = skillSection;
+        container.innerHTML = "";
+    }
+
+    // CREATE SKILL ITEMS DYNAMICALLY
+    scores.forEach(skill => {
+        const name = skill.field;
+        const percentage = skill.percentage;
+
+        // Convert percentage → 0-5 stars
+        const starCount = Math.round(percentage / 20);
+
+        // Determine text level
+        let levelName = "Novice";
+        if (starCount === 5)      levelName = "Expert";
+        else if (starCount === 4) levelName = "Advanced";
+        else if (starCount === 3) levelName = "Intermediate";
+        else if (starCount === 2) levelName = "Beginner";
+        else if (starCount === 1) levelName = "Very Low";
+
+        // CREATE SKILL ITEM
+        const item = document.createElement("div");
+        item.classList.add("skill-item");
+
+        item.innerHTML = `
+            <div class="skill-name">${name.toUpperCase()}</div>
+
+            <div class="star-rating" data-skill="${name}">
+                ${[1,2,3,4,5].map((n) =>
+                    `<span class="star ${n <= starCount ? "active" : ""}">
+                        <i class="fas fa-star"></i>
+                    </span>`
+                ).join("")}
+            </div>
+
+            <div class="skill-level">${levelName}</div>
+        `;
+
+        container.appendChild(item);
+    });
+}
+}
+
+loadUser();
+    </script>
+</body>
+</html>
