@@ -36,31 +36,30 @@ async function loadAllUsers() {
 function renderUsers(users) {
   usersContainer.innerHTML = ""; // clear old cards
 
-  users.forEach((user) => {
-    const userCard = document.createElement("div");
-    userCard.className = "user-card";
-    userCard.setAttribute("data-user", user.user_id);
-
-    userCard.innerHTML = `
-      <div class="user-avatar">
-        <img src="${
-          user.profile_image ||
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSWZXex_C1BPKsEDyfKMKPuipvCM58nStVAI1LS1LXMw&s=10"
-        }" alt="User">
-      </div>
-      <div class="user-info">
-        <h3>${user.Name}</h3>
-        <p>${user.Short_Description || "Developer"}</p>
-        <div class="user-status online"></div>
-      </div>
-    `;
-
-    usersContainer.appendChild(userCard);
-
-    userCard.addEventListener("click", () => {
-      console.log("User clicked:", user.Name);
-    });
-  });
+	users.forEach((user) => {
+	  const userCard = document.createElement("div");
+	  userCard.className = "user-card";
+	  userCard.dataset.thisId = user.user_id;   // <-- ADD THIS
+	
+	  userCard.innerHTML = `
+	    <div class="user-avatar">
+	      <img src="${user.profile_image || "..."}" alt="User">
+	    </div>
+	    <div class="user-info">
+	      <h3>${user.Name}</h3>
+	      <p>${user.Short_Description || "Developer"}</p>
+	      <div class="user-status online"></div>
+	    </div>
+	  `;
+	
+	  usersContainer.appendChild(userCard);
+	
+	  userCard.addEventListener("click", (e) => {
+	    const id = e.currentTarget.dataset.thisId;	    
+	    sessionStorage.setItem("thisId", id);
+	    window.location.href = `user detail.html`;
+	  });
+	});
 }
 
 // ----------------------------
