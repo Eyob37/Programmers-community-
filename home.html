@@ -151,7 +151,7 @@ if (error) {
     users.forEach(user => {
       const userCard = document.createElement("div");
       userCard.className = "user-card";
-      userCard.setAttribute("data-user", user.user_id);
+      userCard.dataset.thisId = user.user_id; 
 
       userCard.innerHTML = `
         <div class="user-avatar" data-thisId="${user.user_id}">
