@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat with User</title>
+  <link rel="stylesheet" href="message.css">
+  <!-- Add Font Awesome for icons (optional) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Profile Viewer Modal -->
+  <div id="profile-viewer" class="profile-modal">
+    <div class="profile-modal-content">
+      <div class="profile-header">
+        <button class="close-profile">&times;</button>
+        <h2>User Profile</h2>
+      </div>
+      <div class="profile-body">
+        <div class="profile-image-container">
+          <img id="profile-viewer-image" src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-viewer-pic">
+          <div class="profile-status">
+            <span id="profile-status-indicator" class="status-indicator status-online"></span>
+            <span id="profile-status-text" class="status-text">Online</span>
+          </div>
+        </div>
+        <div class="profile-info">
+          <h3 id="profile-viewer-name">User Name</h3>
+          <p id="profile-viewer-username" class="profile-username">@username</p>
+          <p id="profile-viewer-bio" class="profile-bio">This is a sample bio. User hasn't updated their bio yet.</p>
+          
+          <div class="profile-details">
+            <div class="detail-item">
+              <i class="fas fa-envelope"></i>
+              <span id="profile-viewer-email">user@example.com</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="profile-actions">
+        <button id="block-user-btn" class="btn btn-secondary">
+          <i class="fas fa-ban"></i> Block User
+        </button>
+        <button id="report-user-btn" class="btn btn-secondary">
+          <i class="fas fa-flag"></i> Report
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add profile trigger to user info -->
+  <div id="user-info">
+    <div class="user-info-content">
+      <div class="profile-trigger">
+        <img id="profile-thumbnail" src="https://via.placeholder.com/40" alt="Profile" class="profile-thumbnail">
+        <div class="user-details">
+          <span id="user-display-name">Loading...</span>
+          <span id="user-status" class="user-status">Online</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="chat-box"></div>
+
+  <div id="chat-controls">
+    <input type="text" id="message-input" placeholder="Write a message..." />
+    <button id="send-button">Send</button>
+  </div>
+
+
+  <script type="module">        
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabaseUrl = "https://jurgrpqwyilfdpzbzfrd.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1cmdycHF3eWlsZmRwemJ6ZnJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5NDM3NTYsImV4cCI6MjA3MTUxOTc1Nn0.1E-1XaNMTuHGUpgVknyWxiiYXArdDCR9yXa8QzOms5E";
+const supabase = createClient(supabaseUrl, supabaseKey);
+         
+// Profile viewer functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const profileViewer = document.getElementById('profile-viewer');
+  const profileTrigger = document.querySelector('.profile-trigger');
+  const closeProfileBtn = document.querySelector('.close-profile');
+  const profileThumbnail = document.getElementById('profile-thumbnail');
+  const profileViewerImage = document.getElementById('profile-viewer-image');
+  const userId = sessionStorage.getItem("thisId");
+  
+  // Open profile viewer when clicking on profile thumbnail
+  if (profileTrigger) {
+    profileTrigger.addEventListener('click', function() {
+      profileViewer.style.display = 'flex';
+      document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
+    });
+  }
+  
+  // Close profile viewer
+  if (closeProfileBtn) {
+    closeProfileBtn.addEventListener('click', function() {
+      profileViewer.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    });
+  }
+  
+  // Close profile viewer when clicking outside the modal
+  profileViewer.addEventListener('click', function(e) {
+    if (e.target === profileViewer) {
+      profileViewer.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+  });
+  
+  // Close with Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && profileViewer.style.display === 'flex') {
+      profileViewer.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+  });
+  
+  // Function to update profile data
+  async function updateProfileData(userData) {
+    // Update profile viewer
+    document.getElementById('profile-viewer-name').textContent = userData.name || 'User Name';
+    document.getElementById('profile-viewer-username').textContent = userData.username ? `@${userData.username}` : '@username';
+    document.getElementById('profile-viewer-bio').textContent = userData.bio || 'This is a sample bio. User hasn\'t updated their bio yet.';
+    document.getElementById('profile-viewer-email').textContent = userData.email || 'user@example.com';    
+    
+    // Update profile image
+    if (userData.profileImage) {
+      profileThumbnail.src = userData.profileImage;
+      profileViewerImage.src = userData.profileImage;
+    }
+    
+    // Update status
+    const statusIndicator = document.getElementById('profile-status-indicator');
+    const statusText = document.getElementById('profile-status-text');
+    const userStatus = document.getElementById('user-status');
+    
+    if (userData.status) {
+      statusIndicator.className = `status-indicator status-${userData.status}`;
+      statusText.textContent = userData.status.charAt(0).toUpperCase() + userData.status.slice(1);
+      userStatus.textContent = userData.status.charAt(0).toUpperCase() + userData.status.slice(1);
+    }
+    
+    // Update user info bar
+    document.getElementById('user-display-name').textContent = userData.name || 'Loading...';
+  }
+  
+	async function loadUserProfile(userId) {
+	  const { data, error } = await supabase
+	    .from("Users basic information")
+	    .select("user_id, Email, Name, profile_image, Short_Description")
+	    .eq("user_id", userId)
+	    .single();
+	
+	  if (error) {
+	    console.error("Error fetching user data:", error);
+	    return;
+	  }
+	
+	  updateProfileData({
+	    name: data.Name,
+	    username: data.user_id,
+	    bio: data.Short_Description,
+	    email: data.Email,
+	    profileImage: data.profile_image,
+	    status: "online"
+	  });
+	}
+	loadUserProfile(userId);
+});
+      
+  </script>
+  <script type="module" src="message.js"></script>
+</body>
+</html>
