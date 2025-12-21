@@ -8,6 +8,199 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Chat List Item Styles */
+.chat-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background-color: var(--background-color, #ffffff);
+    border-radius: 16px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--border-color, #eaeaea);
+    min-width: 0; /* Prevent flex overflow */
+}
+
+/* Hover/Tap States */
+.chat-item:hover {
+    background-color: var(--hover-color, #f8f9fa);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-color: var(--border-hover-color, #d0d0d0);
+}
+
+.chat-item:active {
+    transform: translateY(0);
+    transition-duration: 0.1s;
+    background-color: var(--active-color, #f0f0f0);
+}
+
+/* Avatar/Circular Profile Image */
+.chat-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid var(--avatar-border, #ffffff);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.chat-item:hover .chat-avatar {
+    transform: scale(1.05);
+}
+
+/* Chat Info Container */
+.chat-info {
+    flex: 1;
+    min-width: 0; /* Enable text truncation */
+    overflow: hidden;
+}
+
+/* User Name */
+.chat-info h3 {
+    margin: 0 0 6px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary, #1a1a1a);
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Last Message */
+.chat-info p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--text-secondary, #666666);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .chat-item {
+        --background-color: #1e1e1e;
+        --hover-color: #2a2a2a;
+        --active-color: #333333;
+        --border-color: #333333;
+        --border-hover-color: #444444;
+        --text-primary: #ffffff;
+        --text-secondary: #a0a0a0;
+        --avatar-border: #333333;
+    }
+    
+    .chat-item {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .chat-item:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .chat-item {
+        padding: 14px 12px;
+        gap: 14px;
+        border-radius: 14px;
+        margin-bottom: 10px;
+    }
+    
+    .chat-avatar {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .chat-info h3 {
+        font-size: 15px;
+        margin-bottom: 5px;
+    }
+    
+    .chat-info p {
+        font-size: 13px;
+        -webkit-line-clamp: 1;
+    }
+}
+
+/* Touch-friendly tap targets for mobile */
+@media (hover: none) and (pointer: coarse) {
+    .chat-item {
+        min-height: 72px; /* Minimum touch target */
+    }
+    
+    .chat-item:active {
+        background-color: var(--active-color, #f0f0f0);
+        transform: scale(0.98);
+    }
+}
+
+/* Focus state for accessibility */
+.chat-item:focus-visible {
+    outline: 2px solid var(--focus-color, #0066cc);
+    outline-offset: 2px;
+}
+
+/* Animation for new messages or active state */
+.chat-item.unread {
+    position: relative;
+}
+
+.chat-item.unread::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 8px;
+    height: 8px;
+    background-color: var(--unread-indicator, #0066cc);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1);
+    }
+}
+
+/* Optional: For very small screens */
+@media (max-width: 320px) {
+    .chat-item {
+        padding: 12px 10px;
+        gap: 12px;
+    }
+    
+    .chat-avatar {
+        width: 44px;
+        height: 44px;
+    }
+    
+    .chat-info h3 {
+        font-size: 14px;
+    }
+    
+    .chat-info p {
+        font-size: 12px;
+    }
+}
+    </style>
 </head>
 <body>
     <div class="app-container">
@@ -16,7 +209,7 @@
         </header>
         
         <main class="page-content chat-content">
-
+            
         </main>
 
         <!-- Bottom Navigation -->
@@ -54,6 +247,104 @@
         </nav>
     </div>
 
-    <script src="chat.js"></script>
+    <script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabaseUrl = "https://jurgrpqwyilfdpzbzfrd.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1cmdycHF3eWlsZmRwemJ6ZnJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5NDM3NTYsImV4cCI6MjA3MTUxOTc1Nn0.1E-1XaNMTuHGUpgVknyWxiiYXArdDCR9yXa8QzOms5E";
+const supabase = createClient(supabaseUrl, supabaseKey);   
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+
+import {
+  getDatabase,
+  onChildAdded,
+  ref,
+  get
+} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyAxMSbx5OoHAav-st3h8DbCUZ9aZCcHnI8",
+  authDomain: "programming-community-80d94.firebaseapp.com",
+  projectId: "programming-community-80d94",
+  storageBucket: "programming-community-80d94.firebasestorage.app",
+  messagingSenderId: "103513211773",
+  appId: "1:103513211773:web:cb90e77287f005b7870214",
+  measurementId: "G-MMZD11XDNK"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app)
+     
+
+	async function loadUserProfile(userId) {
+	  const { data, error } = await supabase
+	    .from("Users basic information")
+	    .select("Name, profile_image")
+	    .eq("user_id", userId)
+	    .single();
+	
+	  if (error) {
+	    console.error("Error fetching user data:", error);
+	    return;
+	  }
+	  
+	  return [ data.Name, data.profile_image];	   
+	}        
+
+const currentUserId = localStorage.getItem("userId");
+const chatContainer = document.querySelector(".chat-content");
+
+// reference to chats
+const chatsRef = ref(db, "PCChat/chats");
+
+// loop through chats
+onChildAdded(chatsRef, async (snapshot) => {
+  const chatKey = snapshot.key; // oneuserId_otheruserId
+
+  // check if currentUserId exists in chat key
+  if (!chatKey.includes(currentUserId)) return;
+
+  const [userA, userB] = chatKey.split("_");
+
+  // get the other user id
+  const otherUserId = currentUserId === userA ? userB : userA;
+
+  // get user profile (Supabase)
+  const [name, profileImage] = await loadUserProfile(otherUserId);
+
+  // get last message from realtime db
+  const lastMsgRef = ref(
+    db,
+    `PCChat/chats/${chatKey}/metadata`
+  );
+  const lastMsgSnap = await get(lastMsgRef);
+
+  if (!lastMsgSnap.exists()) return;
+
+  const { lastMessage } = lastMsgSnap.val();
+
+  // create chat div
+  const chatDiv = document.createElement("div");
+  chatDiv.className = "chat-item";
+  chatDiv.dataset.thisId = otherUserId; 
+
+  chatDiv.innerHTML = `
+    <img src="${profileImage}" class="chat-avatar">
+    <div class="chat-info">
+      <h3>${name}</h3>
+      <p>${lastMessage}</p>
+    </div>
+  `;
+
+  chatContainer.appendChild(chatDiv);
+  chatDiv.addEventListener("click", (e) => {
+	    const id = e.currentTarget.dataset.thisId;	    	        
+	    sessionStorage.setItem("thisId", id);	        
+	    window.location.href = `message.html`;
+  }); 
+});
+</script>
 </body>
 </html>
